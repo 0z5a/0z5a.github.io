@@ -398,10 +398,13 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
 }
 @media (max-width:699px){
   /* On a phone the windows take nearly the whole width, still staggered a little. */
-  /* About is laid out at the 365px it was tuned at on a phone and scaled to the screen as one piece, so its spacing keeps its proportions at any width. */
-  #about{width:365px;zoom:var(--az,1)}
-  #about .me>.aff{top:50px}
-  #about .me>[data-t=bio]{top:-50px}
+  /* On a phone About keeps the type of the other windows and lays itself out by flow, not by offsets: name, motto and bio close together at the top,
+     the affiliations just above the keys. A narrow screen makes the square taller instead of letting lines run into each other. */
+  #about{width:min(100%,420px)}
+  #about .me>.motto,#about .me>[data-t=bio],#about .me>.aff{position:static}
+  #about .me>[data-t=bio]{margin-top:var(--bg,4px)}
+  #about .me>.aff{margin-top:auto;padding-top:16px;margin-bottom:2px}
+  #about .links{margin-top:0}
   #articles{width:92%;margin:0 0 0 auto}
   #papers{margin-top:-100px}
   #papers{width:96%}
@@ -692,10 +695,6 @@ DW.forEach(w=>{
   wide.addEventListener('change',()=>{if(!wide.matches){dx=dy=0;w.style.transform='';overlaps()}});
 });
 overlaps();addEventListener('resize',()=>requestAnimationFrame(overlaps));document.fonts&&document.fonts.ready.then(overlaps);
-{const ab=$('#about'),ph=matchMedia('(max-width:699px)');
-  const fit=()=>{if(!ph.matches){ab.style.removeProperty('--az');return}const c=getComputedStyle(desk),w=desk.clientWidth-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight);
-    ab.style.setProperty('--az',(Math.min(w,420)/365).toFixed(4))};
-  fit();addEventListener('resize',fit);ph.addEventListener&&ph.addEventListener('change',fit)}
 /* A window with a "more" opens the same directory from its title, unless its bar was being dragged. */
 DW.forEach(w=>{const m=w.querySelector('[data-more]'),bar=w.querySelector('.bar'),h=bar&&bar.querySelector('h2');if(!m||!h)return;let p=null;
   h.classList.add('go');h.tabIndex=0;h.setAttribute('role','link');
