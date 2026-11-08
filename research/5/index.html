@@ -47,6 +47,10 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--void:#000;--ivory:#f2fbff;--fg:var(--aqua);--fga:60%;--vig:rgba(0,8,34,.46);--sh1:rgba(0,0,0,.55);--sh2:rgba(0,0,0,.4);--dockfg:#fff;--docksh:rgba(0,8,40,.62);color-scheme:dark}}
 :root[data-theme=dark]{--void:#000;--ivory:#f2fbff;--fg:var(--aqua);--fga:60%;--vig:rgba(0,8,34,.46);--sh1:rgba(0,0,0,.55);--sh2:rgba(0,0,0,.4);--dockfg:#fff;--docksh:rgba(0,8,40,.62);color-scheme:dark}
 html{background:var(--void)}
+/* While the scene shows, the page ground under it is the colour the scene has at its foot (set from the frame, --gbg): a phone's toolbar
+   sliding away, or Safari's bar floating over the bottom, then uncovers that colour rather than a black or white strip. */
+html.glon:not(.post):not(.dir){background:var(--gbg,var(--void))}
+html.glon:not(.post):not(.dir) body{background:transparent}
 /* A Japanese page sets its pixel type in the Japanese cut, so kanji take their Japanese forms. */
 html[lang=ja]{--px:MCP,FPJ,FP,"Hiragino Sans","Noto Sans CJK JP",ui-monospace,monospace;--ps:SS4,"Hiragino Mincho ProN","Yu Mincho","Noto Serif CJK JP",serif;--pi:IN,"Hiragino Sans","Noto Sans CJK JP",system-ui,sans-serif}
 @media (min-resolution:2.5dppx){:root{--pxm:16px}}
@@ -1672,8 +1676,21 @@ const roof=(p,x0,x1,z0,z1,y0,y1,m)=>{const xm=(x0+x1)/2,o=p(xm,y0-2,(z0+z1)/2);
  {const v0=V.length;hull(cn,'paper');turns(v0,C,[0,1,0],.28)}beam([C[0],0,C[2]],[C[0],C[1]-s*Math.sqrt(3)+.3,C[2]],.5,'ink');loft(at(C[0],0,C[2]),[[0,4,4],[1.5,4,4]],20,'shade')}
 
 /* No ground: the stations stand on their own plinths over the dark. */
-const verts=new Float32Array(V);V.length=0;
-const STRIDE=32,COUNT=verts.length/8;
+/* Every face is pushed as six vertices, a b c a c d, two of them repeats: kept once and drawn by index, the vertex shader runs a third
+   fewer times and the buffer is a third smaller. A pair is merged only when all eight of its numbers agree. */
+const STRIDE=32,COUNT=V.length/8;
+const {verts,IDX}=(()=>{
+  const n=COUNT,o=new Float32Array(V.length),ix=new Uint32Array(n);let u=0;
+  const same=(i,j)=>{for(let k=0;k<8;k++)if(V[i*8+k]!==V[j*8+k])return false;return true};
+  for(let i=0;i<n;i++){const k=i%6;
+    if(n%6==0&&k==3&&same(i,i-3))ix[i]=ix[i-3];
+    else if(n%6==0&&k==4&&same(i,i-2))ix[i]=ix[i-2];
+    else{for(let q=0;q<8;q++)o[u*8+q]=V[i*8+q];ix[i]=u++}}
+  V.length=0;
+  if(u<=65535)return{verts:o.slice(0,u*8),IDX:Uint16Array.from(ix)};
+  if(gl.getExtension('OES_element_index_uint'))return{verts:o.slice(0,u*8),IDX:ix};
+  const flat=new Float32Array(n*8);for(let i=0;i<n;i++)flat.set(o.subarray(ix[i]*8,ix[i]*8+8),i*8);return{verts:flat,IDX:null};
+})();
 /* Fog runs toward the sky colour B. s.y flags: -1 unshaded, -2 the sun's halo (light theme only), -3 the sea (its own, longer fog), -4 glow (colour GC). */
 const SCENE_VS=`attribute vec3 p;attribute vec3 c;attribute vec2 s;uniform mat4 M;uniform vec3 E,B,HC,GC,N;uniform float T,HV;varying vec3 C;
 void main(){vec3 q=p;if(s.y>19.5&&s.y<40.){vec3 c0,n0;float w1,w2;${DEF.map((d,i)=>`${i?'else ':''}if(s.y<${(20.5+i).toFixed(1)}){c0=vec3(${d.c.map(v=>v.toFixed(4))});n0=vec3(${d.n.map(v=>v.toFixed(4))});w1=${d.w1.toFixed(3)};w2=${d.w2.toFixed(3)};}`).join('')}vec3 v=q-c0;float a=T*w1,ca=cos(a),sa=sin(a);v=v*ca+cross(n0,v)*sa+n0*dot(n0,v)*(1.-ca);q=c0+v;float g=T*w2,cg=cos(g),sg=sin(g);q=vec3(q.x*cg-q.z*sg,q.y,q.x*sg+q.z*cg);}else if(s.y>40.){float t=.34*sin(T*1.7);q+=vec3(${SWP[0].toFixed(4)},0.,${SWP[2].toFixed(4)})*(s.x*sin(t));q.y+=s.x*(1.-cos(t));}else if(s.x>0.){float a=T*1.15+s.y+p.y*.55;q.x+=sin(a)*s.x*.9;q.z+=cos(a*.8)*s.x*.55;}
@@ -1698,12 +1715,13 @@ function link(g,vs,fs){
   sh(g.VERTEX_SHADER,vs);sh(g.FRAGMENT_SHADER,fs);g.linkProgram(pr);return pr;
 }
 function sceneIn(g){
-  const pr=link(g,SCENE_VS,SCENE_FS),buf=g.createBuffer();
+  const pr=link(g,SCENE_VS,SCENE_FS),buf=g.createBuffer(),ib=IDX&&g.createBuffer(),IT=IDX instanceof Uint16Array?g.UNSIGNED_SHORT:g.UNSIGNED_INT;
   g.bindBuffer(g.ARRAY_BUFFER,buf);g.bufferData(g.ARRAY_BUFFER,verts,g.STATIC_DRAW);
+  if(ib){g.bindBuffer(g.ELEMENT_ARRAY_BUFFER,ib);g.bufferData(g.ELEMENT_ARRAY_BUFFER,IDX,g.STATIC_DRAW)}
   const at=[['p',3,0],['c',3,12],['s',2,24]].map(([n,sz,o])=>[g.getAttribLocation(pr,n),sz,o]);
   const u={M:g.getUniformLocation(pr,'M'),E:g.getUniformLocation(pr,'E'),T:g.getUniformLocation(pr,'T'),F:g.getUniformLocation(pr,'F')};for(const n of['B','HC','GC','N','HV'])u[n]=g.getUniformLocation(pr,n);
   return{use(){g.useProgram(pr);g.bindBuffer(g.ARRAY_BUFFER,buf);at.forEach(([l,sz,o])=>{g.enableVertexAttribArray(l);g.vertexAttribPointer(l,sz,g.FLOAT,false,STRIDE,o)})},
-    draw(m,e,t){g.uniform3fv(u.B,THM.K);g.uniform3fv(u.HC,THM.H);g.uniform3fv(u.GC,THM.G);g.uniform3fv(u.N,THM.N);g.uniform1f(u.HV,THM.dark?0:1);g.uniformMatrix4fv(u.M,false,m);g.uniform3f(u.E,e[0],e[1],e[2]);g.uniform1f(u.T,t);g.uniform1f(u.F,t);g.drawArrays(g.TRIANGLES,0,COUNT)},
+    draw(m,e,t){g.uniform3fv(u.B,THM.K);g.uniform3fv(u.HC,THM.H);g.uniform3fv(u.GC,THM.G);g.uniform3fv(u.N,THM.N);g.uniform1f(u.HV,THM.dark?0:1);g.uniformMatrix4fv(u.M,false,m);g.uniform3f(u.E,e[0],e[1],e[2]);g.uniform1f(u.T,t);g.uniform1f(u.F,t);if(ib){g.bindBuffer(g.ELEMENT_ARRAY_BUFFER,ib);g.drawElements(g.TRIANGLES,COUNT,IT,0)}else g.drawArrays(g.TRIANGLES,0,COUNT)},
     /* a few vertices of the same layout, drawn with the uniforms the last draw set */
     more(b,n){g.useProgram(pr);g.bindBuffer(g.ARRAY_BUFFER,b);at.forEach(([l,sz,o])=>g.vertexAttribPointer(l,sz,g.FLOAT,false,STRIDE,o));g.drawArrays(g.TRIANGLES,0,n);this.use()}};
 }
@@ -1921,6 +1939,24 @@ fit(true);measure();
 addEventListener('theme',()=>{gl.clearColor(THM.K[0],THM.K[1],THM.K[2],1);dirty=true});
 
 
+/* The colour at the scene's foot, for the page ground under it (see --gbg), on touch screens only, where toolbars come and go. One row of
+   the frame just drawn: the first the canvas box does not show (the buffer is as tall as the largest viewport), so what a sliding toolbar
+   would uncover; averaged across, and darkened as the vignette darkens the foot. Reading the frame back waits for the GPU, so it is done
+   only when the scene has come to rest, never while it moves: each reading is kept by scroll position, and while moving the nearest kept
+   one is used. (Kept per theme and buffer width.) */
+const TOUCH=matchMedia('(pointer:coarse)').matches,FOOT=new Map();let tinted=-1e9,tint='',footW=0,still=0;
+addEventListener('theme',()=>FOOT.clear());
+const setTint=t=>{if(t&&t!=tint){tint=t;root.style.setProperty('--gbg',t)}};
+const footNear=()=>{const b=Math.round(cur*64);for(let d=0;d<=64;d++){const t=FOOT.get(b-d)||FOOT.get(b+d);if(t)return t}};
+const foot=()=>{
+  if(footW!=cv.width){FOOT.clear();footW=cv.width}
+  const W=cv.width,shown=Math.round(cv.clientHeight*W/Math.max(1,cv.clientWidth)),y=Math.max(0,Math.min(cv.height-1,cv.height-shown-1)),px=new Uint8Array(W*4);
+  gl.readPixels(0,y,W,1,gl.RGBA,gl.UNSIGNED_BYTE,px);
+  let r=0,g=0,b=0,k=0;for(let i=0;i<W;i+=4){r+=px[i*4];g+=px[i*4+1];b+=px[i*4+2];k++}
+  const v=(getComputedStyle(root).getPropertyValue('--vig').match(/[\d.]+/g)||[0,0,0,0]).map(Number),a=(v[3]||0)*.6;
+  const c=[r,g,b].map((x,i)=>Math.round(x/k*(1-a)+v[i]*a)),t=`rgb(${c})`;
+  FOOT.set(Math.round(cur*64),t);setTint(t);
+};
 /* Time-based damping, so the path feels identical at 60, 90 and 120 Hz. */
 let cur=Math.min(1,sy/maxScroll),last=0,tAcc=0,drawn=-1e9,rest=0,base=1e9,acc=0,n=0,step=0;
 /* Faint i marks over the four real buildings, each a link to its page, placed with the scene's own camera. The Church of the Light's sits on its end wall, above the cross: over the roof it would always lie under the papers.
@@ -1965,6 +2001,7 @@ function frame(now){
   if(fresh||++rest%8==0)placeMarks();
   gl.clearColor(THM.K[0],THM.K[1],THM.K[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   scene.draw(M,e,time);holy.draw(M,e,time);motes.draw(M,e,time);
+  if(TOUCH&&glon){if(moving){still=0;setTint(footNear())}else if(++still==12||now-tinted>4000){foot();tinted=now}}
   if(!glon&&(intro>=1||warm>=3&&flashed())){glon=true;root.classList.add('glon')}
 }
 requestAnimationFrame(frame);
