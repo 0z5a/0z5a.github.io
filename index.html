@@ -208,6 +208,13 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 #dirwin .pap .m,#dirwin .list small{font-size:var(--pxm);margin-top:8px}
 #dirwin .pap .m{font-size:14px}
 #dirwin .list .k{font-size:var(--pxm)}
+/* Directories grow with the screen in the proportion of a paper page (its title 2.7vw): titles to 36px, the lines under them from 18px to 24px,
+   in steps the pixel face keeps sharp. */
+#dirwin{--dl:var(--pxl);--dm:var(--pxm);--dn:12px}
+@supports (width:round(down,1px,1px)){#dirwin{--dl:round(down,clamp(24px,2.7vw,36px),6px);--dm:round(down,clamp(18px,1.6vw,24px),6px);--dn:round(down,clamp(12px,1vw,18px),6px)}}
+#dirwin .pap p,#dirwin .list a>span:first-child{font-size:var(--dl)}
+#dirwin .pap .m,#dirwin .list small,#dirwin .list .k{font-size:var(--dm)}
+#dirwin li::before{font-size:var(--dn)}
 
 .win{background:var(--pale);background:color-mix(in srgb,var(--pale) 84%,transparent);border:2px solid var(--aqua);outline:1px solid var(--line);min-width:0;position:relative;contain:layout}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;box-sizing:border-box;min-height:28px;background:var(--aqua);padding:4px 5px 4px 10px;font-size:12px;line-height:1;user-select:none}
