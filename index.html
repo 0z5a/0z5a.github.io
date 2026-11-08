@@ -239,7 +239,8 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 .win{display:flex;flex-direction:column}
 /* B, a hard pixel shadow in the ink's deep blue: on the window in hand, and on any window lying over another. */
 #desk .win.drag,#desk .win.ov{box-shadow:8px 8px 0 var(--deep)}
-@media (min-width:900px) and (pointer:fine){#desk .win>.bar{cursor:var(--xcur,move)}}
+@media (min-width:900px) and (pointer:fine){#desk .win>.bar{cursor:var(--xcur,move)}
+#desk .win>.bar h2.go{cursor:pointer}}
 html.dragging,html.dragging *{cursor:var(--xcur,move)!important}
 .win>.body{flex:1 1 auto}
 .scraps{flex:1 1 auto;display:flex;justify-content:center;align-items:center;padding:14px 12px 16px;pointer-events:none}
@@ -690,6 +691,12 @@ DW.forEach(w=>{
   wide.addEventListener('change',()=>{if(!wide.matches){dx=dy=0;w.style.transform='';overlaps()}});
 });
 overlaps();addEventListener('resize',()=>requestAnimationFrame(overlaps));document.fonts&&document.fonts.ready.then(overlaps);
+/* A window with a "more" opens the same directory from its title, unless its bar was being dragged. */
+DW.forEach(w=>{const m=w.querySelector('[data-more]'),bar=w.querySelector('.bar'),h=bar&&bar.querySelector('h2');if(!m||!h)return;let p=null;
+  h.classList.add('go');h.tabIndex=0;h.setAttribute('role','link');
+  bar.addEventListener('pointerdown',e=>{p=e.target.closest('h2')?[e.clientX,e.clientY]:null});
+  bar.addEventListener('click',e=>{if(p&&Math.hypot(e.clientX-p[0],e.clientY-p[1])<5)m.click();p=null});
+  h.addEventListener('keydown',e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();m.click()}})});
 /* Articles and papers lie across each other: whichever of the two has its middle nearer the screen's middle height comes to the top, with the shadow. */
 {const A=$('#articles'),B=$('#papers');let q=0;
   const d=w=>{const r=w.getBoundingClientRect();return Math.abs(r.top+r.bottom-innerHeight)};
