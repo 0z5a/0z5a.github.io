@@ -123,31 +123,20 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 /* The left lane is as wide as the contributions; sized from its children, the about text would stretch it to its longest line. */
 .lane.a{flex:0 0 auto;width:clamp(380px,28vw,440px)}
 .lane.b{flex:1 1 0;padding-top:16vh}
-#about{width:min(100%,320px);aspect-ratio:1/1}
-@media (max-resolution:1.49dppx){#about{width:min(100%,360px)}}
+/* About is a rectangle as tall as its text, in every layout: name, motto, bio, affiliations and keys one after another at the
+   windows' own small gaps, as dense as the windows below (the square it was left wide gaps once the window was wide). */
+#about{width:min(100%,420px)}
 /* In the two-lane layout, About stands out past the right of its lane, into the open space before the articles. */
 @media (min-width:1180px){#about{align-self:flex-end;margin-right:calc(-1 * clamp(80px,9vw,160px))}}
 #about .me{display:flex;flex-direction:column}
-/* Name and motto at the top, the buttons on the floor (as far from the bottom edge as from the left); between them the bio and the
-   affiliations, with the free height shared equally among the three gaps. */
 #about .me{padding-bottom:7px}
-#about .me>[data-t=bio],#about .me>.aff{margin-top:auto;margin-bottom:0}
-/* (the gaps are laid out by flow, never by offsets, with a floor under each, so a longer bio cannot run into the motto or the keys) */
-#about .me>.aff{margin-bottom:0;padding-top:8px}
-#about .me>[data-t=bio]{padding-top:8px}
-#about .me>.motto{margin-bottom:0;position:relative;top:-3px}
+#about .me>[data-t=bio]{margin-top:4px;margin-bottom:0}
+#about .me>.aff{margin-top:10px;margin-bottom:0}
+#about .me>.motto{margin-bottom:0}
 /* The name's ink starts as far below the title bar as the text starts from the left edge (the 24px line box puts ~8px of air above the glyphs). */
 #about .me>.who{margin-top:-8px}
-#about .links{margin-top:auto;padding-top:8px}
+#about .links{margin-top:10px}
 #contrib{width:100%}
-/* A phone on its side: About is the same dense rectangle, as tall as its text, as on a phone held upright (the square left wide gaps and ran off the screen). */
-@media (min-width:700px) and (max-height:500px){
-  #about{width:min(100%,420px);aspect-ratio:auto}
-  #about .me>.motto,#about .me>[data-t=bio],#about .me>.aff{position:static}
-  #about .me>[data-t=bio]{margin-top:4px;padding-top:0}
-  #about .me>.aff{margin-top:10px;padding-top:0;margin-bottom:0}
-  #about .links{margin-top:10px;padding-top:0}
-}
 #articles{width:clamp(400px,31vw,440px);min-height:410px;margin-left:calc(var(--pw) - var(--ov))}
 #papers{width:var(--pw);margin-top:-130px}
 /* Wider than a phone, a third of each of these two windows is pictures, in a column beside the words and as tall as they are:
