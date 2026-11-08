@@ -96,6 +96,8 @@ a{color:inherit}
    The colour itself is baked: the scene and the clippings run through one ramp. */
 #vig{position:fixed;inset:0;z-index:79;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 54%,var(--vig) 100%)}
 #grade{position:fixed;left:-120px;top:-120px;width:calc(100vw + 240px);height:calc(100lvh + 240px);z-index:80;pointer-events:none;will-change:transform;animation:grain .48s steps(1) infinite}
+/* On sharp screens the grain tile is drawn at half size, so each speck is one device pixel, not two. */
+@media (min-resolution:1.5dppx){#grade{background-size:79.5px 79.5px}}
 @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(61px,-36px)}50%{transform:translate(-43px,72px)}75%{transform:translate(29px,48px)}}
 /* The article is aqua text on black and nothing else: the filter steps out while it is open. */
 html.post #grade,html.post #vig{opacity:0;transition:opacity .45s ease .42s}
@@ -112,8 +114,8 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 .lane.b{flex:1 1 0;padding-top:16vh}
 #about{width:min(100%,320px);aspect-ratio:1/1}
 @media (max-resolution:1.49dppx){#about{width:min(100%,360px)}}
-/* In the two-lane layout, About stands at the right of its lane, over the contributions' right edge. */
-@media (min-width:1180px){#about{align-self:flex-end}}
+/* In the two-lane layout, About stands out past the right of its lane, into the open space before the articles. */
+@media (min-width:1180px){#about{align-self:flex-end;margin-right:calc(-1 * clamp(80px,9vw,160px))}}
 #about .me{display:flex;flex-direction:column}
 #about .links{margin-top:auto}
 #contrib{width:100%}
@@ -1449,7 +1451,7 @@ precision mediump float;
 `;
 /* Paper grain, scanlines, one slow rolling band and rare hot pixels: the signal is worn, never the text. */
 const SCENE_FS=HP+`varying vec3 C;uniform float F;
-void main(){vec2 x=gl_FragCoord.xy,g=floor(x/1.5);float n=fract(52.9829189*fract(dot(g,vec2(.06711056,.00583715))));
+void main(){vec2 x=gl_FragCoord.xy,g=floor(x);float n=fract(52.9829189*fract(dot(g,vec2(.06711056,.00583715))));
 vec3 c=C+(n-.5)*.045;c*=.95+.05*step(.5,fract(x.y/3.));
 c+=.04*smoothstep(.94,1.,fract(x.y*.0007-F*.05));
 if(fract(sin(dot(floor(x/2.)+floor(F*9.),vec2(12.9898,78.233)))*43758.5453)>.9994)c=vec3(1.);
