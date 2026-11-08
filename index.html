@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<base href="/" data-paths>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>/0z5a</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1114,7 +1115,7 @@ const readW=()=>{const x=Math.min(1,Math.max(0,(innerWidth/innerHeight-.8)/.7)),
   root.style.setProperty('--rf',rf.toFixed(4));scatter()};
 addEventListener('resize',readW,{passive:true});readW();document.fonts&&document.fonts.addEventListener('loadingdone',scatter);
 let postOpen=false,fadeFrom=null,gone=0,hide=0,sandT=0;
-document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(a&&document.getElementById('a-'+a.getAttribute('href').slice(1)))fadeFrom=e.target.closest('#dir')?null:[e.clientX||innerWidth/2,e.clientY||innerHeight/2]},true);
+document.addEventListener('click',e=>{const a=e.target.closest('a[href]'),h=a&&a.getAttribute('href'),k=!h?'':h[0]=='#'?h.slice(1):h[0]=='/'&&ROUTES[pth(h)]||'';if(k&&document.getElementById('a-'+k))fadeFrom=e.target.closest('#dir')?null:[e.clientX||innerWidth/2,e.clientY||innerHeight/2]},true);
 /* The parts leave one after another, spreading from whatever was clicked. */
 function stagger(){
   const fx=fadeFrom?fadeFrom[0]:innerWidth/2,fy=fadeFrom?fadeFrom[1]:innerHeight/2;
@@ -1192,7 +1193,7 @@ function closeDir(fast){
   const to=!src.hidden&&src.getBoundingClientRect();
   if(to&&to.width&&!RM&&!fast)flip(to,true,fin);else fin();
 }
-const leaveDir=()=>{if(dirFrom){dirFrom=false;history.back()}else{history.replaceState(null,'',location.pathname+location.search);closeDir()}};
+const leaveDir=()=>{if(dirFrom){dirFrom=false;history.back()}else{history.replaceState(null,'',HOME());closeDir()}};
 $('#dhome').addEventListener('click',e=>{e.preventDefault();leaveDir()});
 /* The picture viewer. */
 const LB=(()=>{const d=document.createElement('div');d.id='lb';d.hidden=true;d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');
@@ -1210,6 +1211,39 @@ const LB=(()=>{const d=document.createElement('div');d.id='lb';d.hidden=true;d.s
   addEventListener('keydown',e=>{if(e.key=='Escape'&&!d.hidden){e.stopPropagation();shut()}},true);
   $('#ptext').addEventListener('click',e=>{const i=e.target.closest&&e.target.closest('.ph img,.plate img');if(!i)return;const src=i.currentSrc||i.src||i.dataset.src;if(src){e.preventDefault();open(src)}});
   return{shut}})();
+/* Addresses. On the site itself (its head carries <base href="/" data-paths>) every article, paper and list has a path of its own:
+   /article/n in the order of the home page's list, /research/n in the order the papers went up on arXiv (so a new one takes the next
+   number), /research and /contrib for the full lists, /friend for the friends. Elsewhere (the preview) the same keys ride in the hash. */
+const ROUTES={'article/1':'revelation','article/2':'grace','article/3':'girona',
+  'research/1':'p2610-28620','research/2':'p2610-34427','research/3':'p2610-34436','research/4':'p2610-41825','research/5':'p2611-05150',
+  'research':'all-papers','contrib':'all-contrib','friend':'all-friends'},
+  RK=Object.fromEntries(Object.entries(ROUTES).map(([q,k])=>[k,q])),PATHS=!!document.querySelector('base[data-paths]'),
+  pth=h=>h.replace(/^\/+|\/+$/g,''),
+  rkey=()=>{if(PATHS){const q=ROUTES[pth(location.pathname)];if(q)return q}return location.hash.slice(1)},
+  HOME=()=>PATHS?'/':location.pathname+location.search;
+function go(k){
+  if(!PATHS){location.hash=k;return}
+  const to=RK[k]?'/'+RK[k]:'/';
+  if(pth(location.pathname)!==pth(to)||location.hash)history.pushState(null,'',to);
+  route();
+  if(!RK[k]&&k){const t=document.getElementById(k);if(t)t.scrollIntoView()}
+}
+if(PATHS){
+  /* the links say where they lead, so they open in a new tab too; inside the page a click moves without a reload */
+  $$('a[href^="#"]').forEach(a=>{const k=a.getAttribute('href').slice(1);if(RK[k])a.setAttribute('href','/'+RK[k]);else if(k=='articles'){a.setAttribute('href','/');a.dataset.go='articles'}});
+  document.addEventListener('click',e=>{
+    if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    const a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target)return;const h=a.getAttribute('href');
+    /* (with the base at the root, a bare #anchor would leave for the home page: it only scrolls instead) */
+    if(h[0]=='#'){e.preventDefault();const t=h.length>1&&document.getElementById(h.slice(1));if(t)t.scrollIntoView();return}
+    if(h[0]!='/'||h[1]=='/')return;const q=pth(h);if(q&&!ROUTES[q])return;
+    e.preventDefault();go(a.dataset.go||ROUTES[q]||'');
+  });
+  addEventListener('popstate',route);
+  /* old addresses (/#girona) move to their paths; the server's trailing slash (/research/2/) is dropped */
+  {const k=location.hash.slice(1);if(RK[k])history.replaceState(null,'','/'+RK[k]);
+   else if(location.pathname.length>1&&location.pathname.endsWith('/'))history.replaceState(null,'','/'+pth(location.pathname)+location.search+location.hash)}
+}
 function closePost(){
   LB.shut();
   if(!postOpen)return;
@@ -1218,15 +1252,15 @@ function closePost(){
   hide=setTimeout(()=>{post.hidden=true;arts.forEach(x=>{x.hidden=true});root.classList.remove('leaving')},460);
 }
 function route(){
-  const id=location.hash.slice(1);
+  const id=rkey();
   if(DIRS[id]){closePost();openDir(id);return}else if(dirOpen)closeDir(!!document.getElementById('a-'+id));let a=document.getElementById('a-'+id);
   if(a&&ALT.has(LANG)){
     const l=LANG,z=document.getElementById('a-'+id+'-'+l);
-    if(z)a=z;else if(id=='revelation'&&!artFail[l]){artFor(l).then(z=>{if(!z)artFail[l]=true;if(location.hash.slice(1)==id)route()});return}
+    if(z)a=z;else if(id=='revelation'&&!artFail[l]){artFor(l).then(z=>{if(!z)artFail[l]=true;if(rkey()==id)route()});return}
   }
   if(a&&a.dataset.full&&!a.dataset.got){
     a.dataset.got='1';const q=a.dataset.full;
-    fetch(q).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(h=>{a.insertAdjacentHTML('beforeend',h)},()=>{}).then(()=>{if(location.hash.slice(1)==id)route()});return
+    fetch(q).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(h=>{a.insertAdjacentHTML('beforeend',h)},()=>{}).then(()=>{if(rkey()==id)route()});return
   }
   if(!a||!a.matches('#post article')){dirBack=null;closePost();return}
   clearTimeout(hide);
@@ -1264,7 +1298,7 @@ function setLang(){
  addEventListener('pointerdown',e=>{if(!ll.hidden&&!e.target.closest('.lm'))menu(false)});
  addEventListener('keydown',e=>{if(e.key=='Escape'&&!ll.hidden){e.stopImmediatePropagation();menu(false);lb.focus()}});}
 addEventListener('hashchange',route);setLang();route();
-addEventListener('keydown',e=>{if(e.key!='Escape')return;if(dirOpen)leaveDir();else if(postOpen)location.hash='articles'});
+addEventListener('keydown',e=>{if(e.key!='Escape')return;if(dirOpen)leaveDir();else if(postOpen)go('articles')});
 new IntersectionObserver(e=>{$('#hero').classList.toggle('off',!e[0].isIntersecting)}).observe($('#hero'));
 /* Until the first scroll the page is only the scene and its name. */
 new IntersectionObserver(e=>root.classList.toggle('top',e[0].intersectionRatio>.8),{threshold:[.8]}).observe($('#hero'));
@@ -1590,7 +1624,6 @@ const roof=(p,x0,x1,z0,z1,y0,y1,m)=>{const xm=(x0+x1)/2,o=p(xm,y0-2,(z0+z1)/2);
    if(al)b(0,2+H/2,sz*10.5,18,H,1.4,'paper');else b(sx*10.5,2+H/2,0,1.4,H,18,'paper');
    for(let c=0;c<4;c++)for(let r=0;r<4;r++){const u=-6.75+c*4.5,y=5+r*5.6,o=10.5+.72,hh=r==3?4.6:3.6;
      if(al)b(u,y,sz*o,2.6,hh,.1,'night');else b(sx*o,y,u,.1,hh,2.6,'night')}}}
-const TORUS_C=[-5,53,-80];
 /* The right of the first view: solids hung in the air, an octahedron and an icosahedron drawn as their edges and turning slowly,
    and a cube on its corner. */
 {const wire=(c,P,E,t,w1,ax)=>{const v0=V.length;for(const[i,j]of E)beam(add(c,P[i]),add(c,P[j]),t,'band');turns(v0,c,ax,w1)};
@@ -1600,12 +1633,6 @@ const TORUS_C=[-5,53,-80];
  const IS=I.map(v=>mul(v,4.2)),IE=[];for(let i=0;i<12;i++)for(let j=i+1;j<12;j++)if(Math.abs(Math.hypot(...sub(I[i],I[j]))-2)<1e-6)IE.push([i,j]);
  wire([-4,86,-106],O,OE,.42,.32,norm([.3,1,.2]));
  wire([1,140,-125],IS,IE,.36,-.26,norm([-.2,1,.3]));
- /* After the TPU pod's interconnect: a 2D torus, sixteen by six nodes, each linked to its four neighbours with the ends wrapped round
-    both ways. Drawn on the doughnut it is named for, tipped toward the view, turning about its own axis. */
- {const TC=TORUS_C,ax=norm([.45,.6,.7]),e1=norm(cross(ax,[0,1,0])),e2=cross(ax,e1),NA=16,NB=6,RA=9.5,RB=3.4,v0=V.length,
-   P=(i,j)=>{const u=i/NA*6.2832,w=j/NB*6.2832,rr=RA+RB*Math.cos(w);return add(TC,add(add(mul(e1,Math.cos(u)*rr),mul(e2,Math.sin(u)*rr)),mul(ax,RB*Math.sin(w))))};
-  for(let i=0;i<NA;i++)for(let j=0;j<NB;j++){const a=P(i,j);beam(a,P((i+1)%NA,j),.26,'band');beam(a,P(i,(j+1)%NB),.26,'band');box(a[0],a[1],a[2],.8,.8,.8,'ink')}
-  turns(v0,TC,ax,.22)}
  /* the cube on its corner, on a thin post */
  const u1=norm([1,-1,0]),u2=norm([1,1,-2]),u3=norm([1,1,1]),C=[-58,30,-128],s=6,cn=[];
  for(const z of[-1,1])for(const[x,y]of[[-1,-1],[1,-1],[1,1],[-1,1]]){const q=[x,y,z];cn.push(add(C,mul(add(add(mul(u1,dot(q,u1)),mul([0,1,0],dot(q,u3))),mul([0,0,1],dot(q,u2))),s)))}
