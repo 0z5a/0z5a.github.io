@@ -248,7 +248,8 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 
 .win{background:var(--pale);background:color-mix(in srgb,var(--pale) 84%,transparent);border:2px solid var(--aqua);outline:1px solid var(--line);min-width:0;position:relative;contain:layout}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;box-sizing:border-box;min-height:28px;background:var(--aqua);padding:4px 5px 4px 10px;font-size:12px;line-height:1;user-select:none}
-.bar h2{margin:0;min-width:0;font:400 12px/1 var(--px);-webkit-font-smoothing:none;color:var(--deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* A window's title is as large as the name in About (0z5a). */
+.bar h2{margin:0;min-width:0;font:400 var(--pxl)/1 var(--px);-webkit-font-smoothing:none;color:var(--deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .body{padding:12px}
 .list{list-style:none;margin:0;padding:0}
 .list li+li{border-top:1px solid var(--panel)}
