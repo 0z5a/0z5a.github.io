@@ -1611,7 +1611,7 @@ function camera(u,w,h){
   }
   return look(e,tg,fov,w,h);
 }
-let roll=0,intro=RM?1:0,held=false;const INTRO=3.2,SKY=[30];
+let roll=0,intro=RM?1:0,held=false;const INTRO=3.2,SKY=[40];
 function look(e,tg,fov,w,h){
   const f=norm(sub(tg,e)),r0=norm(cross(f,[0,1,0])),u0=cross(r0,f),cs=Math.cos(roll),sn=Math.sin(roll),
     r=add(mul(r0,cs),mul(u0,sn)),up=sub(mul(u0,cs),mul(r0,sn)),n=1/Math.tan(fov*Math.PI/360),near=.4,far=800,asp=w/h;
