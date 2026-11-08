@@ -246,6 +246,7 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
   #dirwin .list .k,#dirwin li::before{font-size:max(16px,calc(3.6cqw*var(--dk,1)))}
   #dirwin>.bar{min-height:calc(8.4cqw*var(--dk,1));padding:calc(1.2cqw*var(--dk,1)) calc(1.5cqw*var(--dk,1)) calc(1.2cqw*var(--dk,1)) calc(3cqw*var(--dk,1))}
   #dirwin>.bar h2{font-size:max(24px,calc(5.4cqw*var(--dk,1)))}
+  :root:is(:lang(zh),:lang(ja),:lang(ko)) #dirwin>.bar h2{font-size:calc(.75*max(24px,calc(5.4cqw*var(--dk,1))));line-height:max(24px,calc(5.4cqw*var(--dk,1)))}
   /* A friend's name has as much air above its ink as left of it: the left padding, less the quarter em the pixel face leaves above its capitals. */
   #dirwin[data-k=friends] li{padding-top:calc(calc(3.6cqw*var(--dk,1)) - .251*max(24px,calc(5.4cqw*var(--dk,1))))}
   /* (a phone keeps the floors it was tuned to: titles 24px, lines under them 16px, the same 3:2 as the desk) */
@@ -255,6 +256,9 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;box-sizing:border-box;min-height:28px;background:var(--aqua);padding:4px 5px 4px 10px;font-size:12px;line-height:1;user-select:none}
 /* A window's title is as large as the name in About (0z5a). */
 .bar h2{margin:0;min-width:0;font:400 var(--pxl)/1 var(--px);-webkit-font-smoothing:none;color:var(--deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* A Chinese, Japanese or Korean title fills the whole pixel cell where Latin capitals take about three quarters of it: at the same size it reads larger.
+   It is set at three quarters (crisp on a 2x screen), on the same line height, so the bar keeps its height. */
+:root:is(:lang(zh),:lang(ja),:lang(ko)) .bar h2{font-size:calc(var(--pxl) * .75);line-height:var(--pxl)}
 .body{padding:12px}
 .list{list-style:none;margin:0;padding:0}
 .list li+li{border-top:1px solid var(--panel)}
