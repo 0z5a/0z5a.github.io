@@ -96,8 +96,6 @@ a{color:inherit}
    The colour itself is baked: the scene and the clippings run through one ramp. */
 #vig{position:fixed;inset:0;z-index:79;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 54%,var(--vig) 100%)}
 #grade{position:fixed;left:-120px;top:-120px;width:calc(100vw + 240px);height:calc(100lvh + 240px);z-index:80;pointer-events:none;will-change:transform;animation:grain .48s steps(1) infinite}
-/* On sharp screens the grain tile is drawn at half size, so each speck is one device pixel, not two. */
-@media (min-resolution:1.5dppx){#grade{background-size:79.5px 79.5px}}
 @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(61px,-36px)}50%{transform:translate(-43px,72px)}75%{transform:translate(29px,48px)}}
 /* The article is aqua text on black and nothing else: the filter steps out while it is open. */
 html.post #grade,html.post #vig{opacity:0;transition:opacity .45s ease .42s}
@@ -610,7 +608,9 @@ function grain(d){
    if(r>=.2&&r<.2006)v=[[64,214,255],[255,70,96],[120,255,190]][Math.random()*3|0].concat(d?120:80);
    if(y%3==2&&v[3]<10)v=d?[0,8,34,13]:[10,42,120,9];
    a[i]=v[0];a[i+1]=v[1];a[i+2]=v[2];a[i+3]=v[3]}
-  x.putImageData(q,0,0);$('#grade').style.backgroundImage=`url(${c.toDataURL()})`;
+  x.putImageData(q,0,0);const G=$('#grade');G.style.backgroundImage=`url(${c.toDataURL()})`;
+  /* Light, on sharp screens, the tile is drawn at half size, so each speck is one device pixel; dark keeps its coarser grain. */
+  G.style.backgroundSize=!d&&devicePixelRatio>=1.5?`${N/2}px ${N/2}px`:'';
 }
 /* Everything drawn in WebGL reads its colours from THM: K sky and fog, H the halo round the sun (light only), G glow, N a light tint so white walls keep an edge on a white sky, sBg/sFg the falling blocks. */
 function setTheme(){
@@ -1451,7 +1451,7 @@ precision mediump float;
 `;
 /* Paper grain, scanlines, one slow rolling band and rare hot pixels: the signal is worn, never the text. */
 const SCENE_FS=HP+`varying vec3 C;uniform float F;
-void main(){vec2 x=gl_FragCoord.xy,g=floor(x);float n=fract(52.9829189*fract(dot(g,vec2(.06711056,.00583715))));
+void main(){vec2 x=gl_FragCoord.xy,g=floor(x/1.5);float n=fract(52.9829189*fract(dot(g,vec2(.06711056,.00583715))));
 vec3 c=C+(n-.5)*.045;c*=.95+.05*step(.5,fract(x.y/3.));
 c+=.04*smoothstep(.94,1.,fract(x.y*.0007-F*.05));
 if(fract(sin(dot(floor(x/2.)+floor(F*9.),vec2(12.9898,78.233)))*43758.5453)>.9994)c=vec3(1.);
@@ -1473,7 +1473,7 @@ const scene=sceneIn(gl);scene.use();
    They fill a box that wraps round the eye, so the air is equally full wherever the camera is; each mote stays put in the world and fades
    before it reaches the box's edge. One draw of points, behind what stands in front of them; added to the dark, laid over the light. */
 const motes=(g=>{
-  const N=matchMedia('(max-width:700px)').matches?1800:3200,a=new Float32Array(N*4);
+  const N=matchMedia('(max-width:700px)').matches?900:1600,a=new Float32Array(N*4);
   for(let i=0;i<N*4;i++)a[i]=rnd();
   const pr=link(g,`attribute vec4 a;uniform mat4 M;uniform vec3 E;uniform float T,PX;varying float A;
 const vec3 B=vec3(150.,110.,150.);
