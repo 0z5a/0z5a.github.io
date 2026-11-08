@@ -748,10 +748,10 @@ DW.forEach(w=>{const m=w.querySelector('[data-more]'),bar=w.querySelector('.bar'
   const d=w=>{const r=w.getBoundingClientRect();return Math.abs(r.top+r.bottom-innerHeight)};
   const pick=()=>{q=0;const w=d(A)<d(B)?A:B,o=w==A?B:A;if((+w.style.zIndex||0)<=(+o.style.zIndex||0)){front(w);overlaps()}};
   addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(pick)},{passive:true});addEventListener('resize',()=>requestAnimationFrame(pick));pick()}
-/* Phone: of the windows on the desk (About aside), only the one whose middle is nearest the screen's middle carries the shadow.
+/* Phone: of the windows on the desk, only the one whose middle is nearest the screen's middle carries the shadow.
    The last window can never reach the middle, so over the last half screen of the page the line it is measured from slides down
    to the bottom edge, and the contributions take the shadow at the end. */
-{let q=0;const MW=DW.filter(w=>w.id!='about'),mid=()=>{q=0;let best=null,bd=1e9;
+{let q=0;const MW=DW,mid=()=>{q=0;let best=null,bd=1e9;
    const left=document.documentElement.scrollHeight-scrollY-innerHeight,y=innerHeight/2+Math.max(0,innerHeight/2-left);
    for(const w of MW){const r=w.getBoundingClientRect();if(!r.height)continue;const d=Math.abs((r.top+r.bottom)/2-y);if(d<bd){bd=d;best=w}}
    DW.forEach(w=>w.classList.toggle('mid',w==best))};
