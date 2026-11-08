@@ -461,13 +461,12 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
 .pn{font-style:italic;font-synthesis:style;font-synthesis-style:auto}
 #ptext .plate figcaption i.pn{font-style:italic}
 #end{height:100svh;min-height:420px;display:grid;align-content:end;justify-items:center;padding-bottom:calc(112px + env(safe-area-inset-bottom,0px));padding-inline:16px;text-align:center;color:var(--ivory)}
-/* The foot of the page: the cue's chevron turned over, as translucent, back to the top; then the end mark in the pixel face. */
+/* The foot of the page: the cue's chevron turned over, as translucent, back to the top. */
 #top{display:grid;place-items:center;width:56px;height:44px;color:rgba(255,255,255,.72);-webkit-tap-highlight-color:transparent}
 #top svg{width:45px;height:45px;shape-rendering:crispEdges;filter:drop-shadow(0 1px 2px rgba(0,30,80,.18))}
 #top:focus-visible{outline:2px solid #fff;outline-offset:2px}
-/* Landscape, the aisle is short: keep both on it, below the foot of the cross. */
+/* Landscape, the aisle is short: keep the chevron on it, below the foot of the cross. */
 @media (min-aspect-ratio:1/1){#end{padding-bottom:calc(6svh + env(safe-area-inset-bottom,0px))}}
-#end .fin{margin:12px 0 0;font:24px/1 var(--px);letter-spacing:.08em;white-space:pre;-webkit-font-smoothing:none}
 
 @media (max-width:1179px){
   #desk{--pw:min(500px,64%);flex-direction:column;align-items:stretch;gap:52px;padding-block:8vh 12vh;max-width:760px}
@@ -584,7 +583,7 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
   </div>
 </div>
 
-<footer id="end"><a id="top" href="#hero" aria-label="Back to top"><svg viewBox="0 0 9 9" aria-hidden="true"><path fill="currentColor" d="M1 5h1v2H1zM2 4h1v2H2zM3 3h1v2H3zM4 2h1v2H4zM5 3h1v2H5zM6 4h1v2H6zM7 5h1v2H7z"/></svg></a><p class="fin" aria-hidden="true">- END -</p></footer>
+<footer id="end"><a id="top" href="#hero" aria-label="Back to top"><svg viewBox="0 0 9 9" aria-hidden="true"><path fill="currentColor" d="M1 5h1v2H1zM2 4h1v2H2zM3 3h1v2H3zM4 2h1v2H4zM5 3h1v2H5zM6 4h1v2H6zM7 5h1v2H7z"/></svg></a></footer>
 </div>
 
 <nav id="marks" aria-label="Buildings"><a href="#girona" data-b="girona" class="off" aria-label="Torre Girona and MareNostrum"><span aria-hidden="true">i</span></a></nav>
