@@ -1734,7 +1734,7 @@ const holy=(g=>{
 void main(){vu=u;ve=E-p;vn=m;vf=clamp(1.3-distance(p,E)/380.,.25,1.);gl_Position=M*vec4(p,1.);}`,HP+`uniform sampler2D T;uniform vec3 B,N,L;uniform float F,A;varying vec2 vu;varying vec3 ve,vn;varying float vf;
 void main(){vec3 r=normalize(vn),v=normalize(ve);float d=dot(r,v);if(d<0.)discard;
 /* it turns with the eye: darker toward the limb, a little lighter where it faces the light, and a soft glint that slides as the camera moves */
-float s=mix(.72,1.,smoothstep(.05,.85,d))*mix(.9,1.05,smoothstep(-.5,.7,dot(r,L))); float h=pow(max(dot(r,normalize(L+v)),0.),18.)*.22;
+float s=mix(.8,1.,smoothstep(.05,.85,d))*mix(.9,1.05,smoothstep(-.5,.7,dot(r,L))); float h=pow(max(dot(r,normalize(L+v)),0.),18.)*.22;
 vec4 t=texture2D(T,vu);vec2 x=gl_FragCoord.xy,g=floor(x/1.5);float n=fract(52.9829189*fract(dot(g,vec2(.06711056,.00583715))));
 vec3 c=mix(B,t.rgb*N*s+h,vf)+(n-.5)*.045;c*=.95+.05*step(.5,fract(x.y/3.));c+=.04*smoothstep(.94,1.,fract(x.y*.0007-F*.05));
 gl_FragColor=vec4(c,t.a*A);}`);
@@ -1776,7 +1776,8 @@ gl_FragColor=vec4(c,t.a*A);}`);
     const line=ll=>curve(ll.map(q=>P(at(q))),false);
     /* in the globe's own three tones: the sea, lakes and Jordan its deep blue, the land its pale blue, the journeys white
        (the coast, lakes and river from Natural Earth, public domain) */
-    const LAND=PAL.paper[1],SEA=PAL.paper[2],WH=PAL.paper[0],css=c=>`rgb(${c.map(v=>Math.round(v*255)).join(',')})`;
+    /* (the sea is the globe's deep blue taken a third of the way toward its pale one: the full deep read too heavy) */
+    const LAND=PAL.paper[1],SEA=PAL.paper[2].map((v,i)=>v+(PAL.paper[1][i]-v)*.35),WH=PAL.paper[0],css=c=>`rgb(${c.map(v=>Math.round(v*255)).join(',')})`;
     x.beginPath();x.arc(512,512,481,0,6.2832);x.fillStyle=css(SEA);x.fill();x.save();x.clip();
     x.fillStyle=css(LAND);x.beginPath();for(const l of GEO.land)l.map(P).forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.fill();
     x.fillStyle=x.strokeStyle=css(SEA);for(const l of GEO.lakes){curve(l.map(P),true);x.fill()}
