@@ -170,7 +170,7 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 @media (hover:hover){.pap .m a:hover,.me .aff a:hover{color:var(--deep);background:var(--panel)}}
 /* More: the rest of a list, on request. */
 .more{display:flex;justify-content:flex-end;padding:4px 12px 12px}
-.more a{box-sizing:border-box;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;font:400 24px/1 var(--px);-webkit-font-smoothing:none;color:var(--deep);text-decoration:none;background:var(--panel);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.75)}
+.more a{box-sizing:border-box;display:inline-flex;align-items:center;gap:5px;padding:3px 7px;font:400 24px/1 var(--px);-webkit-font-smoothing:none;color:var(--deep);text-decoration:none;background:var(--panel);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.75)}
 .more a::after{content:"";width:0;height:0;border:5px solid transparent;border-left:7px solid currentColor;border-right:0}
 .more a:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
 @media (hover:hover){.more a:hover{background:var(--aqua)}}
@@ -670,6 +670,11 @@ DW.forEach(w=>{
   wide.addEventListener('change',()=>{if(!wide.matches){dx=dy=0;w.style.transform='';overlaps()}});
 });
 overlaps();addEventListener('resize',()=>requestAnimationFrame(overlaps));document.fonts&&document.fonts.ready.then(overlaps);
+/* Articles and papers lie across each other: whichever of the two has its middle nearer the screen's middle height comes to the top, with the shadow. */
+{const A=$('#articles'),B=$('#papers');let q=0;
+  const d=w=>{const r=w.getBoundingClientRect();return Math.abs(r.top+r.bottom-innerHeight)};
+  const pick=()=>{q=0;const w=d(A)<d(B)?A:B,o=w==A?B:A;if((+w.style.zIndex||0)<=(+o.style.zIndex||0)){front(w);overlaps()}};
+  addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(pick)},{passive:true});addEventListener('resize',()=>requestAnimationFrame(pick));pick()}
 /* The cursor over a bar, and while a window is carried: a white Latin cross in pixels with a black rim, drawn here at 1x and 2x
    so it stays sharp. Its hot spot is where the arms cross. */
 {const art=k=>{const c=document.createElement('canvas');c.width=15*k;c.height=21*k;const x=c.getContext('2d');
