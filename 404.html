@@ -1776,8 +1776,8 @@ gl_FragColor=vec4(c,t.a*A);}`);
     const line=ll=>curve(ll.map(q=>P(at(q))),false);
     /* in the globe's own three tones: the sea, lakes and Jordan its deep blue, the land its pale blue, the journeys white
        (the coast, lakes and river from Natural Earth, public domain) */
-    /* (the sea is the globe's deep blue taken a third of the way toward its pale one: the full deep read too heavy) */
-    const LAND=PAL.paper[1],SEA=PAL.paper[2].map((v,i)=>v+(PAL.paper[1][i]-v)*.35),WH=PAL.paper[0],css=c=>`rgb(${c.map(v=>Math.round(v*255)).join(',')})`;
+    /* (the sea is the deep blue of the cross's shaded side, so the two read as one) */
+    const LAND=PAL.paper[1],SEA=PAL.ink[2],WH=PAL.paper[0],css=c=>`rgb(${c.map(v=>Math.round(v*255)).join(',')})`;
     x.beginPath();x.arc(512,512,481,0,6.2832);x.fillStyle=css(SEA);x.fill();x.save();x.clip();
     x.fillStyle=css(LAND);x.beginPath();for(const l of GEO.land)l.map(P).forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.fill();
     x.fillStyle=x.strokeStyle=css(SEA);for(const l of GEO.lakes){curve(l.map(P),true);x.fill()}
