@@ -73,7 +73,7 @@ a{color:inherit}
 
 /* One word per beat, each set differently; the name stays torn and out of register. */
 #hero{box-sizing:border-box;height:100svh;min-height:480px;position:relative;display:grid;align-content:start;justify-items:start;padding-top:calc(26px + env(safe-area-inset-top,0px));padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow:hidden}
-#hero h1{position:relative;margin:0;color:transparent;font:400 54px/1 var(--mc);letter-spacing:0;font-variant-ligatures:none;-webkit-font-smoothing:none}
+#hero h1{position:relative;margin:0;color:transparent;font:400 40px/1 var(--mc);letter-spacing:0;font-variant-ligatures:none;-webkit-font-smoothing:none}
 #hero.off *,#hero.off h1::before,#hero.off h1::after{animation-play-state:paused}
 /* The name is there for readers of the markup; on screen it only flashes: whole for about a second and a half, with a torn band at the start, middle and end. */
 #hero h1::before,#hero h1::after{content:attr(data-n);position:absolute;left:0;top:0;color:var(--ivory);text-shadow:-2px 0 var(--chroma),2px 0 var(--red);visibility:hidden;animation:flash 6.8s steps(1) infinite}
@@ -89,7 +89,7 @@ a{color:inherit}
 #hero h1{z-index:1}
 @media (max-aspect-ratio:1/1){
   #hero{padding-top:calc(18px + env(safe-area-inset-top,0px));padding-left:max(20px,env(safe-area-inset-left,0px))}
-  #hero h1{font-size:45px}
+  #hero h1{font-size:34px}
 }
 @keyframes rise{from{opacity:0;transform:translateY(.16em)}to{opacity:1;transform:none}}
 /* The filter: grain, scanlines, dust and a vignette over everything, in plain alpha. No blend mode and no filter(), so it costs the compositor one quad.
