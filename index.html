@@ -289,6 +289,10 @@ html.post #post{opacity:1;transition-delay:.42s}
 @supports (initial-letter:2) or (-webkit-initial-letter:2){
   #ptext article:not([data-full]):is(:lang(zh),:lang(ja))>p:first-of-type::first-letter{margin:0 .75em 0 0;font-size:inherit;line-height:inherit;-webkit-initial-letter:2;initial-letter:2}
 }
+/* Safari (only the prefixed property) leaves a CJK initial 18px of air beside it but 11px below on a phone; bring the side in to match. */
+@supports (-webkit-initial-letter:2) and (not (initial-letter:2)){
+  #ptext article:not([data-full]):is(:lang(zh),:lang(ja))>p:first-of-type::first-letter{margin-right:.38em}
+}
 #ptext h2{margin:2.4em 0 .7em;font:600 clamp(20px,2.4vw,28px)/1.3 var(--serif)}
 #ptext h1+h2{margin-top:0}
 /* A paper in full: the headings, display equations, figures (the PDF's drawing as a mask, painted in the text colour), tables and references. */
@@ -320,8 +324,11 @@ html.post #post{opacity:1;transition-delay:.42s}
 /* Quieter text: alpha in the colour, not opacity, so 1,500 paragraphs do not each become a layer. */
 #ptext{color:color-mix(in srgb,var(--fg) var(--fga),transparent)}
 /* Plates: small cuts set into the column, the verses running round them, right and left by turns */
-.plate{float:right;width:min(42%,calc(54vh * var(--a)));aspect-ratio:var(--a);margin:var(--pt) 0 var(--pb) var(--ps);--ps:.9em;--pt:.12em;--pb:0px;background:color-mix(in srgb,var(--aqua) 7%,transparent)}
-.plate img{display:block;width:100%;height:100%}
+.plate{float:right;width:min(42%,calc(54vh * var(--a)));margin:var(--pt) 0 var(--pb) var(--ps);--ps:.9em;--pt:.12em;--pb:0px}
+.plate img{display:block;width:100%;height:auto;aspect-ratio:var(--a);background:color-mix(in srgb,var(--aqua) 7%,transparent)}
+/* Under each plate, in small italics, the way a book credits one: artist, title, year. */
+#ptext .plate figcaption{margin-top:.5em;font:italic 400 13px/1.45 var(--serif)}
+#ptext .plate figcaption i{font-style:normal}
 .plate.l{float:left;margin:var(--pt) var(--ps) var(--pb) 0}
 @media (max-width:699px){.plate{width:46%}}
 @media (max-width:699px){#ptext{padding-bottom:calc(32vh + env(safe-area-inset-bottom,0px))}}
@@ -532,7 +539,7 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
       <p>And shall go out to deceive the nations which are in the four quarters of the earth, Gog, and Magog, to gather them together to battle: the number of whom is as the sand of the sea.</p>
       <p>And they went up on the breadth of the earth, and compassed the camp of the saints about, and the beloved city: and fire came down from God out of heaven, and devoured them.</p>
       <p>And the devil that deceived them was cast into the lake of fire and brimstone, where the beast and the false prophet are, and shall be tormented day and night for ever and ever.</p>
-      <figure class="plate" style="--a:0.7989"><img data-src="img/rev-judgment.webp" width="564" height="706" alt="Gustave Doré, The Last Judgment" decoding="async"></figure>
+      <figure class="plate" style="--a:0.7989"><img data-src="img/rev-judgment.webp" width="564" height="706" alt="Gustave Doré, The Last Judgment" decoding="async"><figcaption>Gustave Doré, <i>The Last Judgment</i>, 1866</figcaption></figure>
       <p>And I saw a great white throne, and him that sat on it, from whose face the earth and the heaven fled away; and there was found no place for them.</p>
       <p>And I saw the dead, small and great, stand before God; and the books were opened: and another book was opened, which is the book of life: and the dead were judged out of those things which were written in the books, according to their works.</p>
       <p>And the sea gave up the dead which were in it; and death and hell delivered up the dead which were in them: and they were judged every man according to their works.</p>
@@ -548,7 +555,7 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
       <p>He that overcometh shall inherit all things; and I will be his God, and he shall be my son.</p>
       <p>But the fearful, and unbelieving, and the abominable, and murderers, and whoremongers, and sorcerers, and idolaters, and all liars, shall have their part in the lake which burneth with fire and brimstone: which is the second death.</p>
       <p>And there came unto me one of the seven angels which had the seven vials full of the seven last plagues, and talked with me, saying, Come hither, I will shew thee the bride, the Lamb’s wife.</p>
-      <figure class="plate l" style="--a:0.8060"><img data-src="img/rev-jerusalem.webp" width="640" height="794" alt="Gustave Doré, The New Jerusalem" decoding="async"></figure>
+      <figure class="plate l" style="--a:0.8060"><img data-src="img/rev-jerusalem.webp" width="640" height="794" alt="Gustave Doré, The New Jerusalem" decoding="async"><figcaption>Gustave Doré, <i>The New Jerusalem</i>, 1866</figcaption></figure>
       <p>And he carried me away in the spirit to a great and high mountain, and shewed me that great city, the holy Jerusalem, descending out of heaven from God,</p>
       <p>Having the glory of God: and her light was like unto a stone most precious, even like a jasper stone, clear as crystal;</p>
       <p>And had a wall great and high, and had twelve gates, and at the gates twelve angels, and names written thereon, which are the names of the twelve tribes of the children of Israel:</p>
@@ -1026,8 +1033,8 @@ function artFor(l){
   return artP[l]||(artP[l]=fetch('revelation-'+l+'.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(j=>{
     const a=document.createElement('article'),el=(t,x)=>{const e=document.createElement(t);e.textContent=x;a.append(e);return e};
     a.id='a-revelation-'+l;a.lang=LC[l];a.hidden=true;el('h1',j.t).tabIndex=-1;
-    const en=$$('#a-revelation figure'),at={},c0=j.c0||1;j.p.forEach(([c,v,alt],i)=>{at[c+':'+v]=[en[i],alt]});
-    j.c.forEach((vs,ci)=>{el('h2',String(ci+c0));vs.forEach((v,vi)=>{const q=at[(ci+c0)+':'+vi];if(q&&q[0]){const f=q[0].cloneNode(true);f.querySelector('img').alt=q[1];a.append(f);plateIO.observe(f.querySelector('img'))}el('p',v)})});
+    const en=$$('#a-revelation figure'),at={},c0=j.c0||1;j.p.forEach(([c,v,alt,cap],i)=>{at[c+':'+v]=[en[i],alt,cap]});
+    j.c.forEach((vs,ci)=>{el('h2',String(ci+c0));vs.forEach((v,vi)=>{const q=at[(ci+c0)+':'+vi];if(q&&q[0]){const f=q[0].cloneNode(true),fc=f.querySelector('figcaption');f.querySelector('img').alt=q[1];if(fc&&q[2])fc.innerHTML=q[2];a.append(f);plateIO.observe(f.querySelector('img'))}el('p',v)})});
     if(j.foot){const f=document.createElement('footer');f.className='src';f.innerHTML=j.foot;a.append(f)}
     $('#ptext').append(a);arts=$$('#post article');return a;
   }).catch(()=>{artP[l]=null;return null}));
