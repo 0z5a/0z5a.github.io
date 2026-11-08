@@ -229,14 +229,16 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
    desk's own (title 18px, line under it 12px, rows 2px/12px, on a 333px row at 1440 wide) as a share of the window's width. */
 @supports (width:1cqw){
   #dirwin{container-type:inline-size}
-  #dirwin .pap li,#dirwin .list li{padding:.6cqw 3.6cqw;column-gap:1.8cqw}
-  #dirwin .pap p,#dirwin .list a>span:first-child{font-size:max(24px,5.4cqw);line-height:1}
-  #dirwin .pap .m{font-size:max(16px,3.6cqw);line-height:1.15;margin-top:.3cqw;gap:0 4.2cqw}
-  #dirwin .list a{gap:0 3.6cqw}
-  #dirwin .list small{font-size:max(16px,3.6cqw);line-height:1.75;margin-top:0}
-  #dirwin .list .k,#dirwin li::before{font-size:max(16px,3.6cqw)}
-  #dirwin>.bar{min-height:8.4cqw;padding:1.2cqw 1.5cqw 1.2cqw 3cqw}
-  #dirwin>.bar h2{font-size:max(16px,3.6cqw)}
+  #dirwin .pap li,#dirwin .list li{padding:calc(.6cqw*var(--dk,1)) calc(3.6cqw*var(--dk,1));column-gap:calc(1.8cqw*var(--dk,1))}
+  #dirwin .pap p,#dirwin .list a>span:first-child{font-size:max(24px,calc(5.4cqw*var(--dk,1)));line-height:1}
+  #dirwin .pap .m{font-size:max(16px,calc(3.6cqw*var(--dk,1)));line-height:1.15;margin-top:calc(.3cqw*var(--dk,1));gap:0 calc(4.2cqw*var(--dk,1))}
+  #dirwin .list a{gap:0 calc(3.6cqw*var(--dk,1))}
+  #dirwin .list small{font-size:max(16px,calc(3.6cqw*var(--dk,1)));line-height:1.75;margin-top:0}
+  #dirwin .list .k,#dirwin li::before{font-size:max(16px,calc(3.6cqw*var(--dk,1)))}
+  #dirwin>.bar{min-height:calc(8.4cqw*var(--dk,1));padding:calc(1.2cqw*var(--dk,1)) calc(1.5cqw*var(--dk,1)) calc(1.2cqw*var(--dk,1)) calc(3cqw*var(--dk,1))}
+  #dirwin>.bar h2{font-size:max(16px,calc(3.6cqw*var(--dk,1)))}
+  /* A friend's name has as much air above its ink as left of it: the left padding, less the quarter em the pixel face leaves above its capitals. */
+  #dirwin[data-k=friends] li{padding-top:calc(calc(3.6cqw*var(--dk,1)) - .251*max(24px,calc(5.4cqw*var(--dk,1))))}
   /* (a phone keeps the floors it was tuned to: titles 24px, lines under them 16px, the same 3:2 as the desk) */
 }
 
@@ -1107,6 +1109,22 @@ function flip(r,back,done){
   let ok=false;const end=()=>{if(ok)return;ok=true;dwin.removeEventListener('transitionend',te);done&&done()},te=e=>{if(e.target==dwin)end()};
   dwin.addEventListener('transitionend',te);setTimeout(end,800);
 }
+/* Landscape: every directory shrinks evenly (its proportions kept) until five papers would stand on the first screen. The papers list,
+   the tallest, sets the size for all of them, so the three directories share one scale; it is swapped in just to be measured. */
+function fitDir(){
+  dwin.style.removeProperty('--dk');
+  const cur=dwin.querySelector('ul');if(!cur||innerWidth<=innerHeight)return;
+  const ref=$('#papers ul').cloneNode(true);ref.querySelectorAll('[hidden]').forEach(x=>{x.hidden=false});
+  const t=dwin.style.transform,tr=dwin.style.transition,k0=dwin.dataset.k;dwin.style.transition='none';dwin.style.transform='none';
+  dwin.dataset.k='papers';cur.replaceWith(ref);
+  const lis=ref.children,li=lis[Math.min(4,lis.length-1)],room=innerHeight-8,
+    fits=k=>{dwin.style.setProperty('--dk',k);return li.getBoundingClientRect().bottom+dir.scrollTop<=room};
+  let k=1;if(!fits(1)){let lo=.3,hi=1;for(let i=0;i<9;i++){const m=(lo+hi)/2;if(fits(m))lo=m;else hi=m}k=lo}
+  ref.replaceWith(cur);dwin.dataset.k=k0;
+  if(k<1)dwin.style.setProperty('--dk',k.toFixed(3));else dwin.style.removeProperty('--dk');
+  dwin.style.transform=t;dwin.style.transition=tr;
+}
+addEventListener('resize',()=>{if(dirOpen)fitDir()});
 function openDir(key){
   const id=DIRS[key];if(dirOpen==id)return;
   const ret=dirBack&&dirBack.id==id?dirBack:null;dirBack=null;
@@ -1117,7 +1135,7 @@ function openDir(key){
   ul.querySelectorAll('li').forEach((x,i)=>{if(i>=20)x.remove()});
   dwin.querySelector('ul')?.remove();dwin.querySelector('.foot')?.remove();dwin.append(ul);
   if(id=='contrib'){const f=document.createElement('div'),g=document.createElement('a');f.className='more foot';g.href='https://github.com/0z5a';g.target='_blank';g.rel='noopener';g.dataset.t='more';g.textContent=tr('more');f.append(g);dwin.append(f)}
-  dir.hidden=false;dir.scrollTop=ret?ret.top:0;if(ret)dirFrom=ret.from;$('#page').inert=true;
+  dir.hidden=false;fitDir();dir.scrollTop=ret?ret.top:0;if(ret)dirFrom=ret.from;$('#page').inert=true;
   root.classList.remove('dirgone');root.classList.add('dir');dir.classList.remove('in');
   if(from&&from.width&&!RM)flip(from,false);else{dwin.style.transition='';dwin.style.transform=''}
   void dir.offsetWidth;dir.classList.add('in');
