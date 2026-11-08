@@ -332,8 +332,9 @@ html.post #post{opacity:1;transition-delay:.42s}
 /* The blog: Latin Modern, Chinese and Japanese from the system's Song and Mincho. Like a newspaper, the first letter is set into the
    text two lines deep, with as much room beside it as under it. */
 #ptext article:not([data-full]){--serif:LMR,Georgia,serif;font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.32}
-/* the lines of a paragraph close, the paragraphs apart */
-#ptext article:not([data-full])>p{margin:0 0 1em}
+/* In every article and paper, in every language: the lines of a paragraph close, the paragraphs apart. */
+#ptext article[data-full]{line-height:1.32}
+#ptext article>p{margin:0 0 1em}
 #ptext article:not([data-full]) h2{margin:1.7em 0 .5em}
 /* Set justified, as a newspaper is, so the text keeps the same room beside a picture on every line; on a phone the column beside a
    picture is too narrow for that, and it runs ragged. */
@@ -348,9 +349,10 @@ html.post #post{opacity:1;transition-delay:.42s}
 @supports (initial-letter:2) or (-webkit-initial-letter:2){
   #ptext article:not([data-full])>p:first-of-type::first-letter{float:none;margin:0 .75em 0 0;font-size:inherit;line-height:inherit;-webkit-initial-letter:2;initial-letter:2}
 }
-/* A Chinese or Japanese character is a whole square, set as a plain float two lines deep in every browser:
+/* A Chinese or Japanese character is a whole square, set as a plain float two lines deep in every browser (sized to fit two lines
+   of 1.32 exactly, so it never pushes a third):
    Safari's initial-letter sinks a CJK square three lines (it aligns by cap height, which a square has not). */
-#ptext article:not([data-full]):is(:lang(zh),:lang(ja))>p:first-of-type::first-letter{float:left;margin:.1em .29em 0 0;font-size:2.6em;line-height:.95;-webkit-initial-letter:normal;initial-letter:normal}
+#ptext article:not([data-full]):is(:lang(zh),:lang(ja))>p:first-of-type::first-letter{float:left;margin:.05em .29em 0 0;font-size:2.42em;line-height:1;-webkit-initial-letter:normal;initial-letter:normal}
 /* Justified Chinese and Japanese is for the running text only: a heading, a byline or a caption justified across its line
    comes apart (the title of the MareNostrum piece stood in wide gaps). */
 #ptext article:is(:lang(zh),:lang(ja)) :is(h1,h2,h3,h4,figcaption,.by,.rt,.meta){text-align:start}
