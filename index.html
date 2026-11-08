@@ -88,10 +88,10 @@ a{color:inherit}
 @keyframes flash{0%,57.9%{visibility:hidden;transform:none}58%{visibility:visible;transform:translateX(-.06em)}58.8%{visibility:visible;transform:translateX(.03em)}59.6%,77%{visibility:visible;transform:none}77.6%{visibility:visible;transform:translateX(.04em)}78.2%,100%{visibility:hidden;transform:none}}
 @keyframes tear{0%,57.9%{visibility:hidden;transform:none}58%{visibility:visible;transform:translateX(-.09em)}58.8%{visibility:visible;transform:translateX(.05em)}59.8%{visibility:visible;transform:translateX(-.02em)}60.4%,67.9%{visibility:hidden;transform:none}68%{visibility:visible;transform:translateX(.06em)}68.6%,76.9%{visibility:hidden;transform:none}77%{visibility:visible;transform:translateX(-.07em)}78.2%,100%{visibility:hidden;transform:none}}
 /* Down: a small key at the foot of the first screen, nodding toward the page. */
-#cue{position:absolute;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:44px;height:44px;margin-left:-22px;display:grid;place-items:center;color:var(--deep);-webkit-tap-highlight-color:transparent;animation:nod 2.4s ease-in-out infinite}
-#cue::before{content:"";position:absolute;inset:7px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.6) 55%,rgba(255,255,255,.78));box-shadow:inset 0 0 0 1px rgba(255,255,255,.95),0 1px 3px var(--sh2)}
-#cue svg{position:relative;width:12px;height:12px;shape-rendering:crispEdges}
-#cue:focus-visible{outline:2px solid var(--deep);outline-offset:-4px;border-radius:999px}
+#cue{position:absolute;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:56px;height:44px;margin-left:-28px;display:grid;place-items:center;color:rgba(255,255,255,.72);-webkit-tap-highlight-color:transparent;animation:nod 2.4s ease-in-out infinite}
+/* Just the chevron, large, in translucent white: no key behind it. */
+#cue svg{position:relative;width:45px;height:45px;shape-rendering:crispEdges;filter:drop-shadow(0 1px 2px rgba(0,30,80,.18))}
+#cue:focus-visible{outline:2px solid #fff;outline-offset:2px}
 @keyframes nod{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 #hero h1{z-index:1}
 @media (max-aspect-ratio:1/1){
