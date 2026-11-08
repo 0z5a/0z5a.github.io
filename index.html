@@ -112,6 +112,8 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 .lane.b{flex:1 1 0;padding-top:16vh}
 #about{width:min(100%,320px);aspect-ratio:1/1}
 @media (max-resolution:1.49dppx){#about{width:min(100%,360px)}}
+/* In the two-lane layout, About stands at the right of its lane, over the contributions' right edge. */
+@media (min-width:1180px){#about{align-self:flex-end}}
 #about .me{display:flex;flex-direction:column}
 #about .links{margin-top:auto}
 #contrib{width:100%}
