@@ -1624,7 +1624,7 @@ const roof=(p,x0,x1,z0,z1,y0,y1,m)=>{const xm=(x0+x1)/2,o=p(xm,y0-2,(z0+z1)/2);
     its corners are every arrangement of (+-1, +-1, +-(1+sqrt 2)) */
  {const k=1+Math.SQRT2,R=[];for(const sx of[-1,1])for(const sy of[-1,1])for(const sz of[-1,1])for(const[a,b,c]of[[1,1,k],[1,k,1],[k,1,1]])R.push([sx*a,sy*b,sz*c]);
   const RS=R.map(v=>mul(v,3.2)),RE=[];for(let i=0;i<24;i++)for(let j=i+1;j<24;j++)if(Math.abs(Math.hypot(...sub(R[i],R[j]))-2)<1e-6)RE.push([i,j]);
-  wire([-5,53,-80],RS,RE,.34,.24,norm([.4,1,-.25]))}
+  wire([-14.5,69.5,-80],RS,RE,.34,.24,norm([.4,1,-.25]))}
  /* the cube on its corner, on a thin post */
  const u1=norm([1,-1,0]),u2=norm([1,1,-2]),u3=norm([1,1,1]),C=[-58,30,-128],s=6,cn=[];
  for(const z of[-1,1])for(const[x,y]of[[-1,-1],[1,-1],[1,1],[-1,1]]){const q=[x,y,z];cn.push(add(C,mul(add(add(mul(u1,dot(q,u1)),mul([0,1,0],dot(q,u3))),mul([0,0,1],dot(q,u2))),s)))}
