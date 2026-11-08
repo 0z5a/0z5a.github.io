@@ -1473,7 +1473,7 @@ const scene=sceneIn(gl);scene.use();
    They fill a box that wraps round the eye, so the air is equally full wherever the camera is; each mote stays put in the world and fades
    before it reaches the box's edge. One draw of points, behind what stands in front of them; added to the dark, laid over the light. */
 const motes=(g=>{
-  const N=matchMedia('(max-width:700px)').matches?900:1600,a=new Float32Array(N*4);
+  const N=matchMedia('(max-width:700px)').matches?450:800,a=new Float32Array(N*4);
   for(let i=0;i<N*4;i++)a[i]=rnd();
   const pr=link(g,`attribute vec4 a;uniform mat4 M;uniform vec3 E;uniform float T,PX;varying float A;
 const vec3 B=vec3(150.,110.,150.);
