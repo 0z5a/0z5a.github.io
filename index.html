@@ -376,9 +376,14 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
   #contrib{order:4;flex:none;width:min(440px,86%);margin:20px 0 0 auto}
 }
 @media (max-width:699px){
-  #articles{width:82%;margin:0 0 0 auto}
+  /* On a phone the windows take nearly the whole width, still staggered a little. */
+  #about{width:min(100%,420px)}
+  #articles{width:92%;margin:0 0 0 auto}
   #papers{margin-top:-100px}
-  #papers{width:92%}
+  #papers{width:96%}
+  #contrib{width:92%}
+  #prefs .glass{width:52px;height:52px}
+  #prefs .k{zoom:1.4}
   #papers>.scraps{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(12,minmax(0,1fr));padding:20px 14px 24px}
   #papers>.scraps img{width:calc(var(--s,1)*108%)}
   #papers>.scraps img:nth-child(n){--cx:0%;--cy:0%}
