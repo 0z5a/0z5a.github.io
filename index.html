@@ -190,6 +190,8 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 html.top #marks,html.leaving #marks,html.dir #marks,html.gone #marks{opacity:0;visibility:hidden}
 /* The directory: the window grows to fill the page while the scene goes, and runs down as far as its list does. */
 #gl,#page{transition:opacity .5s ease}
+/* Until the scene has drawn a few steady frames the canvas stays hidden, so the page shows its plain white (or black) ground, never a stutter. */
+html:not(.glon) #gl{opacity:0}
 html.dir #gl,html.dir #page,html.dir #grade,html.dir #vig{opacity:0;pointer-events:none}
 html.dirgone #gl,html.dirgone #page,html.dirgone #grade,html.dirgone #vig{visibility:hidden}
 #dir{position:fixed;inset:calc(52px + env(safe-area-inset-top,0px)) 0 0;z-index:72;overflow:auto;overscroll-behavior:contain}
@@ -1662,7 +1664,7 @@ function camera(u,w,h){
   }
   return look(e,tg,fov,w,h);
 }
-let roll=0,intro=RM?1:0,held=false;const INTRO=2.4,SKY=[90];
+let roll=0,intro=RM?1:0,held=false,warm=0,wt=0,glon=false;const INTRO=2.4,SKY=[90];
 function look(e,tg,fov,w,h){
   const f=norm(sub(tg,e)),r0=norm(cross(f,[0,1,0])),u0=cross(r0,f),cs=Math.cos(roll),sn=Math.sin(roll),
     r=add(mul(r0,cs),mul(u0,sn)),up=sub(mul(u0,cs),mul(r0,sn)),n=1/Math.tan(fov*Math.PI/360),near=.4,far=800,asp=w/h;
@@ -1714,7 +1716,13 @@ function frame(now){
   const goal=Math.min(1,sy/maxScroll),moving=Math.abs(goal-cur)>2e-4;
   cur=RM?goal:cur+(goal-cur)*(1-Math.exp(-dt*11));
   tAcc+=dt;
-  if(intro<1&&!held){intro=Math.min(1,intro+dt/INTRO);dirty=true}
+  /* Warm-up: the first view is drawn, unseen, until three frames in a row come in under 25 ms (or 1.5 s pass), so shaders and buffers
+     are ready before anything moves. Then the canvas fades in and the slide starts; a slow frame slows it rather than making it jump. */
+  if(intro<1&&!held){
+    if(warm<3){warm=dt<.025?warm+1:0;wt+=dt;if(wt>1.5)warm=3}
+    else intro=Math.min(1,intro+Math.min(dt,1/30)/INTRO);
+    dirty=true;
+  }
   /* Even at rest the swing and the motes move, so the scene is drawn on every frame the display shows: 60 fps at 60 Hz, 120 at 120 Hz.
      Only a display faster than about 160 Hz has frames skipped. The marks move only with the camera, so at rest they are placed again only now and then. */
   if(!moving&&!dirty&&(RM||now-drawn<6))return;
@@ -1723,8 +1731,9 @@ function frame(now){
   if(fresh||++rest%8==0)placeMarks();
   gl.clearColor(THM.K[0],THM.K[1],THM.K[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   scene.draw(M,e,time);motes.draw(M,e,time);
-  /* Adaptive quality while moving: resolution steps down rather than frames being dropped. */
-  if(moving){
+  if(!glon&&(intro>=1||warm>=3)){glon=true;root.classList.add('glon')}
+  /* Adaptive quality while moving (scrolling or the opening slide): resolution steps down rather than frames being dropped, at 60 or 120 Hz alike. */
+  if(moving||intro<1&&warm>=3){
     const ms=dt*1000;base=Math.min(base,ms);acc+=ms;n++;
     if(n==45){const avg=acc/n;acc=0;n=0;
       if(avg>base*1.4&&base<40&&scale>.9){scale=Math.max(.9,scale*.82);fit(true);step++}
