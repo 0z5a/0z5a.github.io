@@ -1111,7 +1111,7 @@ const readTime=a=>{
     l=(a.lang||'en').slice(0,2),n=Math.max(1,Math.round(cj/(l=='ja'?450:380)+w/(l=='de'?200:230))),d=document.createElement('div');
   d.className='rt';d.textContent=(RT[l]||RT.en)(n);(a.querySelector(':scope>.by')||a.querySelector(':scope>h1')).after(d);
 };
-const readW=()=>{const x=Math.min(1,Math.max(0,(innerWidth/innerHeight-.8)/.7)),k=x*x*(3-2*x),rf=1-k/3;
+const readW=()=>{const x=Math.min(1,Math.max(0,(innerWidth/innerHeight-.8)/.7)),k=x*x*(3-2*x),rf=1-k/4;
   root.style.setProperty('--rf',rf.toFixed(4));scatter()};
 addEventListener('resize',readW,{passive:true});readW();document.fonts&&document.fonts.addEventListener('loadingdone',scatter);
 let postOpen=false,fadeFrom=null,gone=0,hide=0,sandT=0;
