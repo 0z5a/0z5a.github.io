@@ -190,8 +190,9 @@ html.dirgone #gl,html.dirgone #page,html.dirgone #grade,html.dirgone #vig{visibi
 #dirwin{width:min(1080px,calc(100% - 2*max(16px,4vw)));min-height:calc(100svh - 52px - env(safe-area-inset-top,0px) - max(8px,2vh) - max(16px,6vh));margin:max(8px,2vh) auto max(16px,6vh);transform-origin:0 0;contain:none}
 #dirwin>.bar{position:sticky;top:0;z-index:1}
 /* The page starts below a strip that holds /0z5a on the left and the corner keys on the right, so the window's bar never runs under them. */
-#dhome{all:unset;position:fixed;z-index:73;left:max(8px,env(safe-area-inset-left,0px));top:calc(6px + env(safe-area-inset-top,0px));cursor:pointer;box-sizing:border-box;padding:14px 8px;font:400 13.5px/1 var(--mc);color:var(--fg);-webkit-font-smoothing:none;font-variant-ligatures:none;opacity:0;transition:opacity .2s ease}
-#dir.in #dhome{opacity:1;transition:opacity .35s ease .32s}
+#dhome{all:unset;position:fixed;z-index:73;left:max(8px,env(safe-area-inset-left,0px));top:calc(6px + env(safe-area-inset-top,0px));cursor:pointer;box-sizing:border-box;padding:14px 8px;font:400 13.5px/1 var(--mc);color:var(--fg);-webkit-font-smoothing:none;font-variant-ligatures:none;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility 0s .2s}
+/* It lies outside the scrolling layer (iOS clipped it there, above the layer's top) and shows while a directory is open. */
+html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 #dhome:focus-visible{outline:1px solid var(--fg)}
 #dirwin>*{opacity:0;transition:opacity .2s ease}
 #dir.in #dirwin>*{opacity:1;transition:opacity .35s ease .32s}
@@ -492,8 +493,8 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
 <!-- The friends' directory: never on the desk; "#all-friends" opens it from About. -->
 <div id="friends" hidden><ul class="list"><li><a href="https://runguoli.com" target="_blank" rel="noopener"><span>Runguo Li</span><small data-t="f_rl">Master's Student @ UIUC</small></a></li><li><a href="https://yangzhou1997.github.io" target="_blank" rel="noopener"><span>Yang Zhou</span><small data-t="f_yz">Assistant Professor @ UC Davis</small></a></li><li><a href="https://reqwey.xyz" target="_blank" rel="noopener"><span>Reqwey</span><small data-t="f_rq">Undergraduate Student @ SJTU</small></a></li><li><a href="https://korbi.ai" target="_blank" rel="noopener"><span>Korbinian Pöppel</span><small data-t="f_kp">ELLIS PhD Student @ JKU Linz</small></a></li><li><a href="https://github.com/Candlest" target="_blank" rel="noopener"><span>Candlest</span><small data-t="f_cd">Undergraduate Student @ SYSU</small></a></li><li><a href="https://superone77.github.io" target="_blank" rel="noopener"><span>Wanqi Yang</span><small data-t="f_wy">PhD Student @ ELLIS Institute Tübingen &amp; MPI-IS</small></a></li><li><a href="https://caicaiis.cc" target="_blank" rel="noopener"><span>CAICAIIs</span></a></li><li><a href="https://monsoon-cs.moe" target="_blank" rel="noopener"><span>Monsoon</span><small data-t="f_ms">PhD Student @ UIUC</small></a></li><li><a href="https://blog.shanwer.top" target="_blank" rel="noopener"><span>Shanwer</span></a></li><li><a href="https://viperekura.xyz" target="_blank" rel="noopener"><span>ViperEkura</span></a></li><li><a href="https://isotr0py.github.io" target="_blank" rel="noopener"><span>Isotr0py</span><small data-t="f_is">vLLM Core Maintainer @ Inferact</small></a></li><li><a href="https://github.com/Chesszyh" target="_blank" rel="noopener"><span>Chesszyh</span><small data-t="f_cz">Undergraduate Student @ Tongji University</small></a></li><li><a href="https://github.com/Camellia86" target="_blank" rel="noopener"><span>Camellia86</span><small data-t="f_cm">AI Researcher @ XJTU</small></a></li></ul></div>
 
+<a id="dhome" href="#">/0z5a</a>
 <div id="dir" hidden>
-  <a id="dhome" href="#">/0z5a</a>
   <section class="win" id="dirwin" role="dialog" aria-labelledby="dir-t">
     <header class="bar"><h2 id="dir-t" tabindex="-1"></h2></header>
   </section>
