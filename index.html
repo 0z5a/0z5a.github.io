@@ -82,9 +82,10 @@ a{color:inherit}
 #hero{box-sizing:border-box;height:100svh;min-height:480px;position:relative;display:grid;align-content:start;justify-items:start;padding-top:calc(26px + env(safe-area-inset-top,0px));padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow:hidden}
 #hero h1{position:relative;margin:0;color:transparent;font:400 40px/1 var(--mc);letter-spacing:0;font-variant-ligatures:none;-webkit-font-smoothing:none}
 #hero.off *,#hero.off h1::before,#hero.off h1::after{animation-play-state:paused}
-/* The name is there for readers of the markup; on screen it only flashes, in the water blue of the sun's rim (no dark glyphs), split into a deeper and a paler blue: whole for about a second and a half, with a torn band at the start, middle and end. */
-#hero h1::before,#hero h1::after{content:attr(data-n);position:absolute;left:0;top:0;color:var(--aqua);text-shadow:-2px 0 var(--line),2px 0 var(--panel);visibility:hidden;animation:flash 6.8s steps(1) infinite}
-#hero h1::after{background:var(--void);clip-path:inset(62% -4% 26% -4%);animation-name:tear;animation-delay:-.08s}
+/* The page opens on this flash, over a plain ground, while the scene warms up unseen; the scene comes in once it is over.
+   The name is there for readers of the markup; on screen it only flashes, in the water blue of the sun's rim (no dark glyphs), split into a deeper and a paler blue: whole for about a second and a half, with a torn band at the start, middle and end. */
+#hero h1::before,#hero h1::after{content:attr(data-n);position:absolute;left:0;top:0;color:var(--aqua);text-shadow:-2px 0 var(--line),2px 0 var(--panel);visibility:hidden;animation:flash 6.8s steps(1) -3.944s infinite}
+#hero h1::after{background:var(--void);clip-path:inset(62% -4% 26% -4%);animation-name:tear;animation-delay:-4.024s}
 @keyframes flash{0%,57.9%{visibility:hidden;transform:none}58%{visibility:visible;transform:translateX(-.06em)}58.8%{visibility:visible;transform:translateX(.03em)}59.6%,77%{visibility:visible;transform:none}77.6%{visibility:visible;transform:translateX(.04em)}78.2%,100%{visibility:hidden;transform:none}}
 @keyframes tear{0%,57.9%{visibility:hidden;transform:none}58%{visibility:visible;transform:translateX(-.09em)}58.8%{visibility:visible;transform:translateX(.05em)}59.8%{visibility:visible;transform:translateX(-.02em)}60.4%,67.9%{visibility:hidden;transform:none}68%{visibility:visible;transform:translateX(.06em)}68.6%,76.9%{visibility:hidden;transform:none}77%{visibility:visible;transform:translateX(-.07em)}78.2%,100%{visibility:hidden;transform:none}}
 /* Down: a small key at the foot of the first screen, nodding toward the page. */
@@ -1664,7 +1665,9 @@ function camera(u,w,h){
   }
   return look(e,tg,fov,w,h);
 }
-let roll=0,intro=RM?1:0,held=false,warm=0,wt=0,glon=false;const INTRO=2.4,SKY=[90];
+let roll=0,intro=RM?1:0,held=false,warm=0,wt=0,glon=false,fa;
+/* true once the opening flash of the name is over (the cycle is entered at 3.944 s and the glyphs go at 78.2% of 6.8 s = 5.318 s, so 1.374 s after the start) */
+const flashed=()=>{if(fa===undefined)fa=(document.getAnimations?document.getAnimations():[]).find(a=>a.animationName=='flash')||null;return !fa||fa.playState!='running'||fa.currentTime==null||fa.currentTime>=1390||performance.now()>9000};const INTRO=2.4,SKY=[90];
 function look(e,tg,fov,w,h){
   const f=norm(sub(tg,e)),r0=norm(cross(f,[0,1,0])),u0=cross(r0,f),cs=Math.cos(roll),sn=Math.sin(roll),
     r=add(mul(r0,cs),mul(u0,sn)),up=sub(mul(u0,cs),mul(r0,sn)),n=1/Math.tan(fov*Math.PI/360),near=.4,far=800,asp=w/h;
@@ -1720,7 +1723,7 @@ function frame(now){
      are ready before anything moves. Then the canvas fades in and the slide starts; a slow frame slows it rather than making it jump. */
   if(intro<1&&!held){
     if(warm<3){warm=dt<.025?warm+1:0;wt+=dt;if(wt>1.5)warm=3}
-    else intro=Math.min(1,intro+Math.min(dt,1/30)/INTRO);
+    else if(flashed())intro=Math.min(1,intro+Math.min(dt,1/30)/INTRO);
     dirty=true;
   }
   /* Even at rest the swing and the motes move, so the scene is drawn on every frame the display shows: 60 fps at 60 Hz, 120 at 120 Hz.
@@ -1731,7 +1734,7 @@ function frame(now){
   if(fresh||++rest%8==0)placeMarks();
   gl.clearColor(THM.K[0],THM.K[1],THM.K[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   scene.draw(M,e,time);motes.draw(M,e,time);
-  if(!glon&&(intro>=1||warm>=3)){glon=true;root.classList.add('glon')}
+  if(!glon&&(intro>=1||warm>=3&&flashed())){glon=true;root.classList.add('glon')}
   /* Adaptive quality while moving (scrolling or the opening slide): resolution steps down rather than frames being dropped, at 60 or 120 Hz alike. */
   if(moving||intro<1&&warm>=3){
     const ms=dt*1000;base=Math.min(base,ms);acc+=ms;n++;
