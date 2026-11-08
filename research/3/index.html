@@ -1449,14 +1449,14 @@ const crown=[0,105,0];
 const DEF=[],turns=(v0,c,n,w1)=>{for(let q=v0;q<V.length;q+=8){V[q+6]=0;V[q+7]=20+DEF.length}DEF.push({c,n,w1,w2:0})};
 /* After Ptolemy: round the dish, as round the earth, a deferent at its own height, smaller than the ring below, tipped a little (12 degrees),
    its near side low enough to pass over the top of the cross, above its arms; on it a planet. */
+let PLANET;
 {const C=add(crown,[0,0,0]),R=16,th=-12*Math.PI/180,N=120,a=norm([-78.5,0,78]),d=norm([78.5,0,78]),
  e2=add(mul(d,Math.cos(th)),mul([0,1,0],Math.sin(th))),on=(t,r,c)=>add(c,add(mul(a,Math.cos(t)*r),mul(e2,Math.sin(t)*r)));
  for(let i=0;i<N;i++)beam(on(i/N*6.2832,R,C),on((i+1)/N*6.2832,R,C),.6,'band');
  const E=on(.5,R,C),v0=V.length;
- beam(C,E,.12,'dish');
  const P=E,r=1.5;loft(at(P[0],P[1],P[2]),[[-r,.05,.05],[-r*.7,r*.71,r*.71],[0,r,r],[r*.7,r*.71,r*.71],[r,.05,.05]],10,'ink');
- /* the planet goes round on its deferent, its spoke with it: once in about eighteen seconds */
- turns(v0,C,norm(cross(a,e2)),.35)}
+ /* the planet goes round on its deferent, once in about eighteen seconds; its spoke runs to Jerusalem on the globe (drawn with the map) */
+ turns(v0,C,norm(cross(a,e2)),.35);PLANET={c:C,n:norm(cross(a,e2)),p:E,w:.35}}
 dish(crown,toSun(crown),12.5,3.5,{seg:64,rings:12});
 
 /* After "Earth Stations": a ring with an angular flared rim, floating. Its web is real: the recursive-doubling
@@ -1687,7 +1687,9 @@ function sceneIn(g){
   const at=[['p',3,0],['c',3,12],['s',2,24]].map(([n,sz,o])=>[g.getAttribLocation(pr,n),sz,o]);
   const u={M:g.getUniformLocation(pr,'M'),E:g.getUniformLocation(pr,'E'),T:g.getUniformLocation(pr,'T'),F:g.getUniformLocation(pr,'F')};for(const n of['B','HC','GC','N','HV'])u[n]=g.getUniformLocation(pr,n);
   return{use(){g.useProgram(pr);g.bindBuffer(g.ARRAY_BUFFER,buf);at.forEach(([l,sz,o])=>{g.enableVertexAttribArray(l);g.vertexAttribPointer(l,sz,g.FLOAT,false,STRIDE,o)})},
-    draw(m,e,t){g.uniform3fv(u.B,THM.K);g.uniform3fv(u.HC,THM.H);g.uniform3fv(u.GC,THM.G);g.uniform3fv(u.N,THM.N);g.uniform1f(u.HV,THM.dark?0:1);g.uniformMatrix4fv(u.M,false,m);g.uniform3f(u.E,e[0],e[1],e[2]);g.uniform1f(u.T,t);g.uniform1f(u.F,t);g.drawArrays(g.TRIANGLES,0,COUNT)}};
+    draw(m,e,t){g.uniform3fv(u.B,THM.K);g.uniform3fv(u.HC,THM.H);g.uniform3fv(u.GC,THM.G);g.uniform3fv(u.N,THM.N);g.uniform1f(u.HV,THM.dark?0:1);g.uniformMatrix4fv(u.M,false,m);g.uniform3f(u.E,e[0],e[1],e[2]);g.uniform1f(u.T,t);g.uniform1f(u.F,t);g.drawArrays(g.TRIANGLES,0,COUNT)},
+    /* a few vertices of the same layout, drawn with the uniforms the last draw set */
+    more(b,n){g.useProgram(pr);g.bindBuffer(g.ARRAY_BUFFER,b);at.forEach(([l,sz,o])=>g.vertexAttribPointer(l,sz,g.FLOAT,false,STRIDE,o));g.drawArrays(g.TRIANGLES,0,n);this.use()}};
 }
 const scene=sceneIn(gl);scene.use();
 /* Motes: specks of light rising slowly through the air, each with its own sway and a slow twinkle; white at the core, the glow colour at the edge.
@@ -1739,12 +1741,22 @@ vec4 t=texture2D(T,vu);vec2 x=gl_FragCoord.xy,g=floor(x/1.5);float n=fract(52.98
 vec3 c=mix(B,t.rgb*N*s+h,vf)+(n-.5)*.045;c*=.95+.05*step(.5,fract(x.y/3.));c+=.04*smoothstep(.94,1.,fract(x.y*.0007-F*.05));
 gl_FragColor=vec4(c,t.a*A);}`);
   const at=[['p',3,0],['u',2,12],['m',3,20]].map(([n,sz,o])=>[g.getAttribLocation(pr,n),sz,o]),u={};for(const n of['M','E','T','B','N','F','A','L'])u[n]=g.getUniformLocation(pr,n);
+  /* the map's frame: north up, wide enough that the coast from Sidon to Gaza, the lake, the Jordan and the Dead Sea read as the land they
+     are; set so far right that the Mediterranean fills more than half the globe and the roads he walked lie right of the cross in front */
+  const L0=32.35,G0=34.4,K=Math.cos(L0*Math.PI/180),SC=480/1.55,P=q=>[512+(q[1]-G0)*K*SC,512-(q[0]-L0)*SC];
+  /* Jerusalem on the globe, a hair proud of the map, where the planet's spoke is fixed */
+  const JER=(()=>{const c=P([31.778,35.235]),x=(c[0]/1024-.5)/TR*R,y=-(c[1]/1024-.5)/TR*R,q=Math.hypot(x,y)/R0;
+    return add(crown,add(add(mul(rt,x),mul(upv,y)),mul(ax,D*q*q+BK-.12)))})(),sb=g.createBuffer();
+  /* the spoke, from the planet where it now is (turned as the scene's shader turns it) to Jerusalem */
+  function spoke(t){
+    if(!PLANET)return;const{c,n,p:e,w}=PLANET,v=sub(e,c),a=t*w,ca=Math.cos(a),sa=Math.sin(a),
+      q=add(c,add(add(mul(v,ca),mul(cross(n,v),sa)),mul(n,dot(n,v)*(1-ca))));
+    beam(q,JER,.12,'dish');const b=new Float32Array(V);V.length=0;
+    g.bindBuffer(g.ARRAY_BUFFER,sb);g.bufferData(g.ARRAY_BUFFER,b,g.DYNAMIC_DRAW);scene.more(sb,b.length/8);
+  }
   let tex=null,t0=0;
   function paint(){
     const S=1024,cv=document.createElement('canvas');cv.width=cv.height=S;const x=cv.getContext('2d');if(!x)return null;
-    /* north up, wide enough that the coast from Sidon to Gaza, the lake, the Jordan and the Dead Sea read as the land they are,
-       and set right of the middle so the Mediterranean fills nearly half the globe */
-    const L0=32.35,G0=34.95,K=Math.cos(L0*Math.PI/180),SC=480/1.45,P=q=>[512+(q[1]-G0)*K*SC,512-(q[0]-L0)*SC];
     /* places [lat, lon] */
     const T={Sidon:[33.563,35.371],Tyre:[33.271,35.196],CPhil:[33.248,35.694],Chorazin:[32.911,35.564],Capernaum:[32.881,35.575],Bethsaida:[32.91,35.631],
       Gennesaret:[32.862,35.545],Magdala:[32.825,35.517],Tiberias:[32.793,35.534],Gergesa:[32.826,35.651],Hippos:[32.778,35.66],Gadara:[32.656,35.68],
@@ -1799,8 +1811,8 @@ gl_FragColor=vec4(c,t.a*A);}`);
     const an=g.getExtension('EXT_texture_filter_anisotropic');if(an)g.texParameterf(g.TEXTURE_2D,an.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(4,g.getParameter(an.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
     t0=performance.now();
   }
-  return{make,paint,draw(m,e,t){
-    if(!tex)return;const a=RM?1:Math.min(1,(performance.now()-t0)/900);if(a<1)dirty=true;
+  return{make,paint,jer:JER,draw(m,e,t){
+    spoke(t);if(!tex)return;const a=RM?1:Math.min(1,(performance.now()-t0)/900);if(a<1)dirty=true;
     g.useProgram(pr);g.bindBuffer(g.ARRAY_BUFFER,buf);at.forEach(([l,sz,o])=>{if(l<0)return;g.enableVertexAttribArray(l);g.vertexAttribPointer(l,sz,g.FLOAT,false,32,o)});
     g.activeTexture(g.TEXTURE0);g.bindTexture(g.TEXTURE_2D,tex);g.uniform1i(u.T,0);g.uniformMatrix4fv(u.M,false,m);g.uniform3f(u.E,e[0],e[1],e[2]);
     g.uniform3fv(u.B,THM.K);g.uniform3fv(u.N,THM.N);g.uniform3fv(u.L,LIGHT);g.uniform1f(u.F,t);g.uniform1f(u.A,a*a*(3-2*a));
