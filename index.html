@@ -223,6 +223,20 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 #dirwin li>*{grid-column:2;min-width:0}
 #dirwin[data-k=friends] li{display:block}
 #dirwin[data-k=friends] li::before{content:none}
+/* Where container units work, a directory is the homepage's Recent Research window blown up to the page: every size is the
+   desk's own (title 18px, line under it 12px, rows 2px/12px, on a 333px row at 1440 wide) as a share of the window's width. */
+@supports (width:1cqw){
+  #dirwin{container-type:inline-size}
+  #dirwin .pap li,#dirwin .list li{padding:.6cqw 3.6cqw;column-gap:1.8cqw}
+  #dirwin .pap p,#dirwin .list a>span:first-child{font-size:max(24px,5.4cqw);line-height:1}
+  #dirwin .pap .m{font-size:max(16px,3.6cqw);line-height:1.15;margin-top:.3cqw;gap:0 4.2cqw}
+  #dirwin .list a{gap:0 3.6cqw}
+  #dirwin .list small{font-size:max(16px,3.6cqw);line-height:1.75;margin-top:0}
+  #dirwin .list .k,#dirwin li::before{font-size:max(16px,3.6cqw)}
+  #dirwin>.bar{min-height:8.4cqw;padding:1.2cqw 1.5cqw 1.2cqw 3cqw}
+  #dirwin>.bar h2{font-size:max(16px,3.6cqw)}
+  /* (a phone keeps the floors it was tuned to: titles 24px, lines under them 16px, the same 3:2 as the desk) */
+}
 
 .win{background:var(--pale);background:color-mix(in srgb,var(--pale) 84%,transparent);border:2px solid var(--aqua);outline:1px solid var(--line);min-width:0;position:relative;contain:layout}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;box-sizing:border-box;min-height:28px;background:var(--aqua);padding:4px 5px 4px 10px;font-size:12px;line-height:1;user-select:none}
