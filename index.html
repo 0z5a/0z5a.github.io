@@ -364,6 +364,10 @@ html.post #post{opacity:1;transition-delay:.42s}
 #ptext .meta{margin-bottom:2em}
 #ptext article a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 #ptext .meta a{text-decoration:none}
+/* Each author is a name of its own (a link to their OpenReview page where one is known); authors and the arXiv link light up blue under the pointer. */
+#ptext .by .au,#ptext .meta a{padding:0 .12em;margin:0 -.12em}
+#ptext a.au{color:inherit;text-decoration:none}
+@media (hover:hover){#ptext .by .au:hover,#ptext .meta a:hover{background:color-mix(in oklab,var(--chroma) 28%,transparent)}}
 /* Quieter text: alpha in the colour, not opacity, so 1,500 paragraphs do not each become a layer. */
 #ptext{color:color-mix(in srgb,var(--fg) var(--fga),transparent)}
 /* Plates: small cuts set into the column, the verses running round them, right and left by turns */
@@ -1087,6 +1091,10 @@ function stagger(){
 /* Revelation's other three languages, each fetched once when first wanted: 和合本 (1919), 文語訳 (1917), Luther (1912).
    All four keep the KJV's verse numbering, so the plates (the English article's own, cloned) fall on the same verses. */
 const ALT=new Set(['zh','ja','de']),artP={},artFail={};
+/* OpenReview profile of each author, by name as the byline writes it; a name not listed here is plain text. */
+const OR={};
+$$('#ptext .by').forEach(b=>{const ns=b.textContent.split(/,\s*/);b.textContent='';ns.forEach((n,i)=>{if(i)b.append(', ');const id=OR[n],e=document.createElement(id?'a':'span');
+  e.className='au';e.textContent=n;if(id){e.href='https://openreview.net/profile?id='+encodeURIComponent(id);e.target='_blank';e.rel='noopener'}b.append(e)})});
 function artFor(l){
   return artP[l]||(artP[l]=fetch('revelation-'+l+'.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(j=>{
     const a=document.createElement('article'),el=(t,x)=>{const e=document.createElement(t);e.textContent=x;a.append(e);return e};
