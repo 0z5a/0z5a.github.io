@@ -279,8 +279,6 @@ html.post #post{opacity:1;transition-delay:.42s}
 #ptext article:not([data-full]):lang(zh){--serif:LMR,"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","Noto Serif SC","SimSun",serif}
 #ptext article:not([data-full]):lang(ja){--serif:LMR,"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif CJK JP","Source Han Serif JP","Noto Serif JP","MS PMincho",serif}
 #ptext article:not([data-full]) h1{font-family:var(--serif);font-weight:700;letter-spacing:0}
-/* One short line of CJK reads higher than a paper's long wrapped title, so the articles' titles start a little lower. */
-#ptext article:not([data-full]) h1{position:relative;top:10px;margin-bottom:calc(.6em + 10px)}
 #ptext article:not([data-full]) h2{font-family:var(--serif);font-weight:700;letter-spacing:0}
 #ptext article:not([data-full])>p:first-of-type::first-letter{float:left;margin:.05em .2em 0 0;font:400 3.2em/.8 LMD,var(--serif);color:var(--fg)}
 @supports (initial-letter:2) or (-webkit-initial-letter:2){
