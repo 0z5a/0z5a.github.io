@@ -270,6 +270,8 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 .win{display:flex;flex-direction:column}
 /* B, a hard pixel shadow in the ink's deep blue: on the window in hand, and on any window lying over another. */
 #desk .win.drag,#desk .win.ov{box-shadow:8px 8px 0 var(--deep)}
+/* On a phone the hard pixel shadow goes only to the window nearest the middle of the screen. */
+@media (max-width:699px){#desk .win.ov{box-shadow:none}#desk .win.mid{box-shadow:8px 8px 0 var(--deep)}}
 @media (min-width:900px) and (pointer:fine){#desk .win>.bar{cursor:var(--xcur,move)}
 #desk .win>.bar h2.go{cursor:pointer}}
 html.dragging,html.dragging *{cursor:var(--xcur,move)!important}
@@ -746,6 +748,11 @@ DW.forEach(w=>{const m=w.querySelector('[data-more]'),bar=w.querySelector('.bar'
   const d=w=>{const r=w.getBoundingClientRect();return Math.abs(r.top+r.bottom-innerHeight)};
   const pick=()=>{q=0;const w=d(A)<d(B)?A:B,o=w==A?B:A;if((+w.style.zIndex||0)<=(+o.style.zIndex||0)){front(w);overlaps()}};
   addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(pick)},{passive:true});addEventListener('resize',()=>requestAnimationFrame(pick));pick()}
+/* Of all the windows on the desk, the one whose middle is nearest the screen's middle height carries the shadow. */
+{let q=0;const mid=()=>{q=0;let best=null,bd=1e9;
+   for(const w of DW){const r=w.getBoundingClientRect();if(!r.height)continue;const d=Math.abs(r.top+r.bottom-innerHeight);if(d<bd){bd=d;best=w}}
+   DW.forEach(w=>w.classList.toggle('mid',w==best))};
+  addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(mid)},{passive:true});addEventListener('resize',mid);mid()}
 /* The cursor over a bar, and while a window is carried: a white Latin cross in pixels with a black rim, drawn here at 1x and 2x
    so it stays sharp. Its hot spot is where the arms cross. */
 {const art=k=>{const c=document.createElement('canvas');c.width=15*k;c.height=21*k;const x=c.getContext('2d');
