@@ -1727,8 +1727,8 @@ const STOP0=[HERO_E,[-30,50,12],40];
    a little off the level, with the tower and the sun pushed right so the left of the frame stays open; tall keeps its own nearer view. */
 function placeSun(){
   const W=cv.width/scale||innerWidth,H=cv.height/scale||innerHeight;if(!W||!H)return;
-  const port=W<H;STOP0[2]=port?40:HERO_FOV;
-  const e=port?HERO_EP:HERO_E,fov=port?Math.min(82,STOP0[2]*1.45):STOP0[2],tn=Math.tan(fov*Math.PI/360),sx=port?.72:.87,sy0=port?.4:.3;
+  const port=W<H;STOP0[2]=port?46:HERO_FOV;
+  const e=port?HERO_EP:HERO_E,fov=port?Math.min(82,STOP0[2]*1.45):STOP0[2],tn=Math.tan(fov*Math.PI/360),sx=port?.84:.87,sy0=port?.4:.3;
   STOP0[0]=e;STOP0[1]=aimSun(e,sub(STOP0[1],STOP0[0]),(2*sx-1)*tn*W/H,(1-2*sy0)*tn);
 }
 /* Turn the camera (no roll) until the sun projects to tangent-space (tx,ty). */
