@@ -172,8 +172,8 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 .pap .m{display:flex;flex-wrap:wrap;gap:0 14px;margin-top:1px;font:400 12px/1.15 var(--px);color:var(--mute)}
 .pap .m a,.me .aff a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 .pap .m a{color:var(--deep);text-decoration:none}
-@media (hover:hover){.pap .m a:hover,.me .aff a:hover{color:var(--deep);background:var(--panel)}
-.me .aff a{text-decoration:none}}
+@media (hover:hover){.pap .m a:hover,.me .aff a:hover{color:var(--deep);background:var(--panel)}}
+.me .aff a{text-decoration:none}
 /* More: the rest of a list, on request. */
 .more{display:flex;justify-content:flex-end;padding:4px 12px 12px}
 .more a{box-sizing:border-box;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;font:400 16px/1 var(--px);-webkit-font-smoothing:none;color:var(--deep);text-decoration:none;background:var(--panel);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.75)}
@@ -426,13 +426,13 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
 }
 @media (max-width:699px){
   /* On a phone the windows take nearly the whole width, still staggered a little. */
-  /* On a phone About keeps the type of the other windows and lays itself out by flow, not by offsets: name, motto and bio close together at the top,
-     the affiliations just above the keys. A narrow screen makes the square taller instead of letting lines run into each other. */
-  #about{width:min(100%,420px)}
+  /* On a phone About keeps the type of the other windows and is a rectangle as tall as its text, as dense as the windows below:
+     name, motto, bio, affiliations and keys one after another at the windows' own small gaps, laid out by flow, not by offsets. */
+  #about{width:min(100%,420px);aspect-ratio:auto}
   #about .me>.motto,#about .me>[data-t=bio],#about .me>.aff{position:static}
-  #about .me>[data-t=bio]{margin-top:var(--bg,4px)}
-  #about .me>.aff{margin-top:auto;padding-top:16px;margin-bottom:2px}
-  #about .links{margin-top:0}
+  #about .me>[data-t=bio]{margin-top:4px}
+  #about .me>.aff{margin-top:10px;padding-top:0;margin-bottom:0}
+  #about .links{margin-top:10px}
   #articles{width:92%;margin:0 0 0 auto}
   #papers{margin-top:-100px}
   #papers{width:96%}
