@@ -217,6 +217,12 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 #dirwin .pap p,#dirwin .list a>span:first-child{font-size:var(--dl)}
 #dirwin .pap .m,#dirwin .list small,#dirwin .list .k{font-size:var(--dm)}
 #dirwin li::before{font-size:var(--dn)}
+/* The number hangs in its own column left of the entry, on the baseline of the title's first line. Friends are not numbered. */
+#dirwin .pap li,#dirwin .list li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:max(12px,1.6vw);align-items:baseline}
+#dirwin li::before{grid-column:1;grid-row:1;margin:0}
+#dirwin li>*{grid-column:2;min-width:0}
+#dirwin[data-k=friends] li{display:block}
+#dirwin[data-k=friends] li::before{content:none}
 
 .win{background:var(--pale);background:color-mix(in srgb,var(--pale) 84%,transparent);border:2px solid var(--aqua);outline:1px solid var(--line);min-width:0;position:relative;contain:layout}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;box-sizing:border-box;min-height:28px;background:var(--aqua);padding:4px 5px 4px 10px;font-size:12px;line-height:1;user-select:none}
@@ -1086,7 +1092,7 @@ function openDir(key){
   const id=DIRS[key];if(dirOpen==id)return;
   const ret=dirBack&&dirBack.id==id?dirBack:null;dirBack=null;
   const src=document.getElementById(id),from=!ret&&!dirOpen&&!src.hidden&&src.getBoundingClientRect();
-  clearTimeout(dirT);dirOpen=id;
+  clearTimeout(dirT);dirOpen=id;dwin.dataset.k=id;
   const h=$('#dir-t');h.dataset.t=id;h.textContent=tr(id);
   const ul=src.querySelector('ul').cloneNode(true);ul.querySelectorAll('[hidden]').forEach(x=>{x.hidden=false});
   ul.querySelectorAll('li').forEach((x,i)=>{if(i>=20)x.remove()});
@@ -1611,7 +1617,7 @@ function camera(u,w,h){
   }
   return look(e,tg,fov,w,h);
 }
-let roll=0,intro=RM?1:0,held=false;const INTRO=2.4,SKY=[70];
+let roll=0,intro=RM?1:0,held=false;const INTRO=2.4,SKY=[90];
 function look(e,tg,fov,w,h){
   const f=norm(sub(tg,e)),r0=norm(cross(f,[0,1,0])),u0=cross(r0,f),cs=Math.cos(roll),sn=Math.sin(roll),
     r=add(mul(r0,cs),mul(u0,sn)),up=sub(mul(u0,cs),mul(r0,sn)),n=1/Math.tan(fov*Math.PI/360),near=.4,far=800,asp=w/h;
