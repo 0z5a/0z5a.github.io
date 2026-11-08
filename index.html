@@ -165,7 +165,8 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 .pap li+li{border-top:1px solid var(--panel)}
 .pap p{margin:0;font-size:var(--pxm);line-height:1;color:var(--deep)}
 .pap a.pt{display:block;color:inherit;text-decoration:none}
-@media (hover:hover){.pap a.pt:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}}
+/* A paper row lights up whole under the pointer, as a contribution row does; the list stops at the plots' column, so the colour does too. */
+@media (hover:hover){.pap:hover li:not(:hover) p{color:var(--mute)}.pap li:hover{background:var(--panel)}.pap li:hover .m a:hover{background:var(--pale)}}
 .pap .m{display:flex;flex-wrap:wrap;gap:0 14px;margin-top:1px;font:400 12px/1.15 var(--px);color:var(--mute)}
 .pap .m a,.me .aff a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 .pap .m a{color:var(--deep);text-decoration:none}
@@ -229,7 +230,9 @@ html.dir #dhome{opacity:1;visibility:visible;transition:opacity .35s ease .32s}
 /* Full-height CJK titles crowd the bar and the row above, so the article titles sit a little lower in their rows. */
 #articles .toc{padding-top:4px}
 #articles .toc a{padding-top:4px}
-@media (hover:hover){.list:hover a{color:var(--mute)}.list a:hover{color:var(--deep);background:var(--panel)}}
+@media (hover:hover){.list:hover a{color:var(--mute)}.list a:hover{color:var(--deep);background:var(--panel)}
+  #dirwin .list a:hover{background:none}#dirwin .list li:hover{background:var(--panel)}
+  #prefs .glass:hover .k{background:var(--panel)}}
 
 /* Contents with numbered entries and a dotted leader. */
 .toc a{display:flex;gap:8px;align-items:baseline;padding:2px 12px;text-decoration:none;font:400 var(--pxm)/1 var(--px);-webkit-font-smoothing:none;font-variant-ligatures:none}
