@@ -115,10 +115,12 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 /* In the two-lane layout, About stands out past the right of its lane, into the open space before the articles. */
 @media (min-width:1180px){#about{align-self:flex-end;margin-right:calc(-1 * clamp(80px,9vw,160px))}}
 #about .me{display:flex;flex-direction:column}
-/* Name and motto at the top; the bio and affiliations in the middle of the free height; the buttons on the floor, as far from the
-   bottom edge as from the left. */
+/* Name and motto at the top, the buttons on the floor (as far from the bottom edge as from the left); between them the bio and the
+   affiliations, with the free height shared equally among the three gaps. */
 #about .me{padding-bottom:7px}
-#about .me>[data-t=bio]{margin-top:auto;margin-bottom:12px}
+#about .me>[data-t=bio],#about .me>.aff{margin-top:auto;margin-bottom:0}
+#about .me>.aff{margin-bottom:-5px}
+#about .me>.motto{margin-bottom:0}
 #about .links{margin-top:auto}
 #contrib{width:100%}
 #articles{width:clamp(400px,31vw,440px);min-height:410px;margin-left:calc(var(--pw) - var(--ov))}
