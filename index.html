@@ -92,6 +92,8 @@ a{color:inherit}
 /* Just the chevron, large, in translucent white: no key behind it. */
 #cue svg{position:relative;width:45px;height:45px;shape-rendering:crispEdges;filter:drop-shadow(0 1px 2px rgba(0,30,80,.18))}
 #cue:focus-visible{outline:2px solid #fff;outline-offset:2px}
+#cue{transition:opacity .35s ease,visibility 0s linear 0s}
+#cue.away{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
 @keyframes nod{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 #hero h1{z-index:1}
 @media (max-aspect-ratio:1/1){
@@ -700,6 +702,9 @@ $('#mode').addEventListener('click',()=>{const d=!isDark();if(d==mqD.matches){de
 
 /* ---------- Windows ---------- */
 let z=2;const front=w=>{w.style.zIndex=++z};
+/* The cue goes once About (0z5a 天使向量機) has come into view, and comes back when the page is scrolled up past it again. */
+{const c=$('#cue'),ab=$('#about');let q=0;const f=()=>{q=0;c.classList.toggle('away',ab.getBoundingClientRect().top<innerHeight)};
+ addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(f)},{passive:true});addEventListener('resize',f);f()}
 $('#cue').addEventListener('click',e=>{e.preventDefault();$('#desk').scrollIntoView({behavior:RM?'auto':'smooth'})});
 const wide=matchMedia('(min-width:900px) and (pointer:fine)');
 /* The windows on the desk are picked up by their bars (wide screens, with a mouse). The one in hand lifts on a hard pixel shadow;
