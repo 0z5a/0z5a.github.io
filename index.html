@@ -86,7 +86,7 @@ a{color:inherit}
 #page{position:relative;z-index:1}
 
 /* One word per beat, each set differently; the name stays torn and out of register. */
-#hero{box-sizing:border-box;height:100svh;min-height:480px;position:relative;display:grid;align-content:start;justify-items:start;padding-top:calc(26px + env(safe-area-inset-top,0px));padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow:hidden}
+#hero{box-sizing:border-box;height:calc(100*var(--vu,1svh));min-height:480px;position:relative;display:grid;align-content:start;justify-items:start;padding-top:calc(26px + env(safe-area-inset-top,0px));padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow:hidden}
 #hero h1{position:relative;margin:0;color:transparent;font:400 40px/1 var(--mc);letter-spacing:0;font-variant-ligatures:none;-webkit-font-smoothing:none}
 #hero.off *,#hero.off h1::before,#hero.off h1::after{animation-play-state:paused}
 /* The page opens on this flash, over a plain ground, while the scene warms up unseen; the scene comes in once it is over.
@@ -123,12 +123,12 @@ html.gone #grade,html.gone #vig{visibility:hidden}
 /* The desk: windows of different sizes, dropped where they fell, in two lanes. About, always a small square, and the contributions under it
    on the left; on the right the articles, started lower, and the papers fallen across their lower left corner (later, so on top, with the
    hard shadow). The corner they cover is the articles' column of cuttings, never their words. Narrower, the same in one staggered column. */
-#desk{display:flex;flex-wrap:wrap;align-items:flex-start;gap:44px;max-width:1360px;margin-inline:auto;padding-block:10vh 12vh;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#desk{display:flex;flex-wrap:wrap;align-items:flex-start;gap:44px;max-width:1360px;margin-inline:auto;padding-block:calc(10*var(--vu,1vh)) calc(12*var(--vu,1vh));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .lane{display:flex;flex-direction:column;align-items:flex-start;gap:44px;min-width:0}
 #desk{--pw:clamp(440px,36vw,500px);--ov:120px}
 /* The left lane is as wide as the contributions; sized from its children, the about text would stretch it to its longest line. */
 .lane.a{flex:0 0 auto;width:clamp(380px,28vw,440px)}
-.lane.b{flex:1 1 0;padding-top:16vh}
+.lane.b{flex:1 1 0;padding-top:calc(16*var(--vu,1vh))}
 /* About is a rectangle as tall as its text, in every layout: name, motto, bio, affiliations and keys one after another at the
    windows' own small gaps, as dense as the windows below (the square it was left wide gaps once the window was wide). */
 #about{width:min(100%,420px)}
@@ -311,7 +311,7 @@ html.gone #page,html.gone #gl{visibility:hidden}
 #post{position:fixed;inset:0;z-index:70;background:var(--void);color:var(--fg);overflow:auto;overscroll-behavior:contain;opacity:0;transition:opacity .45s ease}
 html.post #post{opacity:1;transition-delay:.42s}
 #sand{position:fixed;left:0;top:0;display:block;pointer-events:none;image-rendering:crisp-edges;image-rendering:pixelated}
-#ptext{--serif:SS4,Georgia,"Times New Roman",serif;position:relative;box-sizing:border-box;min-height:calc(100% + 1px);width:calc(var(--rf,1)*100%);padding:clamp(76px,15vh,150px) max(16px,2.5vw,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(clamp(16px,8vw,156px),env(safe-area-inset-left,0px));font:500 18px/1.9 var(--serif)}
+#ptext{--serif:SS4,Georgia,"Times New Roman",serif;position:relative;box-sizing:border-box;min-height:calc(100% + 1px);width:calc(var(--rf,1)*100%);padding:clamp(76px,calc(15*var(--vu,1vh)),150px) max(16px,2.5vw,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(clamp(16px,8vw,156px),env(safe-area-inset-left,0px));font:500 18px/1.9 var(--serif)}
 /* The text takes the whole width of a tall screen and two thirds of a wide one, and turns smoothly between with the screen's shape (--rf). */
 #ptext h1{margin:0 0 .6em;font:700 clamp(24px,2.7vw,38px)/1.3 var(--serif);outline:none}
 #ptext p{margin:0 0 .45em}
@@ -397,14 +397,14 @@ html.post #post{opacity:1;transition-delay:.42s}
 /* Quieter text: alpha in the colour, not opacity, so 1,500 paragraphs do not each become a layer. */
 #ptext{color:color-mix(in srgb,var(--fg) var(--fga),transparent)}
 /* Plates: small cuts set into the column, the verses running round them, right and left by turns */
-.plate{float:right;width:min(42%,calc(54vh * var(--a)));margin:var(--pt) 0 var(--pb) var(--ps);--ps:.9em;--pt:.12em;--pb:0px}
+.plate{float:right;width:min(42%,calc(calc(54*var(--vu,1vh)) * var(--a)));margin:var(--pt) 0 var(--pb) var(--ps);--ps:.9em;--pt:.12em;--pb:0px}
 .plate img{display:block;width:100%;height:auto;aspect-ratio:var(--a);background:color-mix(in srgb,var(--aqua) 7%,transparent)}
 /* Under each plate, in small italics, the way a book credits one: artist, title, year. */
 #ptext .plate figcaption{margin-top:.5em;font:italic 400 13px/1.45 var(--serif)}
 #ptext .plate figcaption i{font-style:normal}
 .plate.l{float:left;margin:var(--pt) var(--ps) var(--pb) 0}
 @media (max-width:699px){.plate{width:46%}}
-@media (max-width:699px){#ptext{padding-bottom:calc(32vh + env(safe-area-inset-bottom,0px))}}
+@media (max-width:699px){#ptext{padding-bottom:calc(calc(32*var(--vu,1vh)) + env(safe-area-inset-bottom,0px))}}
 /* The picture viewer: over everything, the picture fitted to the screen; a tap doubles it (then it scrolls), the pixel cross closes. */
 #lb{position:fixed;inset:0;z-index:90;display:flex;overflow:auto;overscroll-behavior:contain;background:var(--void);background:color-mix(in srgb,var(--void) 97%,transparent);opacity:0;transition:opacity .2s ease}
 #lb[hidden]{display:none}
@@ -460,7 +460,7 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
    (the Chinese, Japanese and Korean ones) are slanted by the browser, so synthesis is allowed here only. */
 .pn{font-style:italic;font-synthesis:style;font-synthesis-style:auto}
 #ptext .plate figcaption i.pn{font-style:italic}
-#end{height:100svh;min-height:420px;display:grid;align-content:end;justify-items:center;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));padding-inline:16px;text-align:center;color:var(--ivory)}
+#end{height:calc(100*var(--vu,1svh));min-height:420px;display:grid;align-content:end;justify-items:center;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));padding-inline:16px;text-align:center;color:var(--ivory)}
 /* The foot of the page: the cue's chevron turned over, as translucent, back to the top, at the cue's own height (18px off the bottom). */
 #top{display:grid;place-items:center;width:56px;height:44px;color:rgba(255,255,255,.72);-webkit-tap-highlight-color:transparent}
 #top svg{width:45px;height:45px;shape-rendering:crispEdges;filter:drop-shadow(0 1px 2px rgba(0,30,80,.18))}
@@ -470,7 +470,7 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
 #top.on{opacity:1;visibility:visible;transition:opacity .9s ease .7s,visibility 0s linear 0s}
 
 @media (max-width:1179px){
-  #desk{--pw:min(500px,64%);flex-direction:column;align-items:stretch;gap:52px;padding-block:8vh 12vh;max-width:760px}
+  #desk{--pw:min(500px,64%);flex-direction:column;align-items:stretch;gap:52px;padding-block:calc(8*var(--vu,1vh)) calc(12*var(--vu,1vh));max-width:760px}
   .lane{display:contents}
   #about{order:1}
   #articles{order:2;width:min(440px,calc(100% - var(--pw) + var(--ov)));min-height:0;margin:0 0 0 calc(var(--pw) - var(--ov))}
@@ -510,6 +510,11 @@ html.post #pmenu{padding-right:calc(max(8px,env(safe-area-inset-right,0px)) + 80
 }
 /* Fonts, all SIL Open Font License: Fusion Pixel (TakWolf), Noto Serif SC (Google), Instrument Serif (Instrument), Monocraft (IdreesInc). */
 </style>
+<script>/* On a touch screen the page's viewport heights (--vu, one hundredth of it) are taken once and again only when the width changes:
+   an in-app browser (QQ, WeChat) hides its own title bar by resizing the page, and the hero, the desk's margins and the foot,
+   sized from the viewport, would jump with it at every turn of the scroll. A mouse-driven window follows its height as before. */
+(()=>{const r=document.documentElement,t=matchMedia('(pointer:coarse)');let w=-1;const f=()=>{if(innerHeight&&(innerWidth!=w||!t.matches)){w=innerWidth;r.style.setProperty('--vu',innerHeight/100+'px')}};f();addEventListener('resize',f)})();
+</script>
 <script>(()=>{const r=document.documentElement,L={zh:'zh-Hans',en:'en',ja:'ja',de:'de',fr:'fr',es:'es',ko:'ko',la:'la'};r.classList.add('top');let t=null,l=null;try{t=localStorage.getItem('theme');l=localStorage.getItem('lang')}catch(e){}if(t=='dark'||t=='light')r.dataset.theme=t;if(!L[l]){l='en';for(const x of(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||''])){const k=String(x).slice(0,2).toLowerCase();if(L[k]){l=k;break}}}r.lang=L[l]})()</script>
 
 <canvas id="gl" aria-hidden="true"></canvas>
@@ -1932,8 +1937,11 @@ function fit(force){
   if(!force&&w==cssW&&h<=cssH)return;
   cssW=w;cssH=h;cv.width=Math.round(w*scale);cv.height=Math.round(h*scale);gl.viewport(0,0,cv.width,cv.height);dirty=true;
 }
+/* (on a touch screen, against the tallest viewport seen at this width: a toolbar coming and going must not shift the camera's place) */
+const COARSE=matchMedia('(pointer:coarse)');let vhW=-1,vhMax=0;
 const measure=()=>{
-  maxScroll=Math.max(1,root.scrollHeight-innerHeight);dirty=true;placeSun();
+  if(innerWidth!=vhW||!COARSE.matches){vhW=innerWidth;vhMax=0}vhMax=Math.max(vhMax,innerHeight);
+  maxScroll=Math.max(1,root.scrollHeight-vhMax);dirty=true;placeSun();
 };
 new ResizeObserver(measure).observe(document.body);
 addEventListener('scroll',()=>{sy=scrollY},{passive:true});
