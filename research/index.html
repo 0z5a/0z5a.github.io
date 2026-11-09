@@ -795,17 +795,21 @@ DW.forEach(w=>{const m=w.querySelector('[data-more]'),bar=w.querySelector('.bar'
   bar.addEventListener('pointerdown',e=>{p=e.target.closest('h2')?[e.clientX,e.clientY]:null});
   bar.addEventListener('click',e=>{if(p&&Math.hypot(e.clientX-p[0],e.clientY-p[1])<5&&m.getClientRects().length)m.click();p=null});
   h.addEventListener('keydown',e=>{if((e.key=='Enter'||e.key==' ')&&m.getClientRects().length){e.preventDefault();m.click()}})});
-/* Articles and papers lie across each other: whichever of the two has its middle nearer the screen's middle height comes to the top, with the shadow. */
+/* Articles and papers lie across each other: whichever of the two has its middle nearer the screen's middle height comes to the top, with the shadow.
+   The one on top keeps it until the other is nearer by a sixth of the screen, so a scroll that stops or turns round near the halfway point
+   doesn't toss them back and forth. */
 {const A=$('#articles'),B=$('#papers');let q=0;
   const d=w=>{const r=w.getBoundingClientRect();return Math.abs(r.top+r.bottom-innerHeight)};
-  const pick=()=>{q=0;const w=d(A)<d(B)?A:B,o=w==A?B:A;if((+w.style.zIndex||0)<=(+o.style.zIndex||0)){front(w);overlaps()}};
+  const pick=()=>{q=0;const t=(+A.style.zIndex||0)>(+B.style.zIndex||0)?A:B,o=t==A?B:A;if(d(o)<d(t)-innerHeight/3){front(o);overlaps()}};
   addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(pick)},{passive:true});addEventListener('resize',()=>requestAnimationFrame(pick));pick()}
 /* Phone: of the windows on the desk, only the one whose middle is nearest the screen's middle carries the shadow.
    The last window can never reach the middle, so over the last half screen of the page the line it is measured from slides down
    to the bottom edge, and the contributions take the shadow at the end. */
-{let q=0;const MW=DW,mid=()=>{q=0;let best=null,bd=1e9;
+/* (the same sixth of a screen: the shadow stays where it is until another window is clearly nearer) */
+{let q=0;const MW=DW,mid=()=>{q=0;let best=null,bd=1e9,hd=1e9;
    const left=document.documentElement.scrollHeight-scrollY-innerHeight,y=innerHeight/2+Math.max(0,innerHeight/2-left);
-   for(const w of MW){const r=w.getBoundingClientRect();if(!r.height)continue;const d=Math.abs((r.top+r.bottom)/2-y);if(d<bd){bd=d;best=w}}
+   for(const w of MW){const r=w.getBoundingClientRect();if(!r.height)continue;const d=Math.abs((r.top+r.bottom)/2-y);if(d<bd){bd=d;best=w}if(w.classList.contains('mid'))hd=d}
+   if(hd-bd<innerHeight/6)return;
    DW.forEach(w=>w.classList.toggle('mid',w==best))};
   addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(mid)},{passive:true});addEventListener('resize',mid);mid()}
 /* The cursor over a bar, and while a window is carried: a white Latin cross in pixels with a black rim, drawn here at 1x and 2x
