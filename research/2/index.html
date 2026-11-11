@@ -2020,7 +2020,7 @@ const foot=()=>{
   FOOT.set(Math.round(cur*64),t);setTint(t);
 };
 /* Time-based damping, so the path feels identical at 60, 90 and 120 Hz. */
-let cur=Math.min(1,sy/maxScroll),last=0,tAcc=0,drawn=-1e9,rest=0,base=1e9,acc=0,n=0,step=0;
+let cur=Math.min(1,sy/maxScroll),last=0,tAcc=0,drawn=-1e9,rest=0,base=1e9,acc=0,n=0,step=0,late=0,bad=0,was=1e9,probe=0;
 /* Faint i marks over the four real buildings, each a link to its page, placed with the scene's own camera. The Church of the Light's sits on its end wall, above the cross: over the roof it would always lie under the papers.
    Hidden when behind the eye, off screen, too near, under a window, or once the eye is inside the Church of the Light, whose walls would hide them. */
 const MK=[['girona',[-36,46,-51]]].map(([k,p])=>[document.querySelector(`#marks [data-b="${k}"]`),p]);
@@ -2037,6 +2037,11 @@ function frame(now){
   requestAnimationFrame(frame);
   const dt=Math.min(.1,(now-last)/1000);last=now;
   if(document.hidden||root.classList.contains('leaving')||root.classList.contains('dirgone')||!dt)return;
+  /* The display's own frame time is the shortest gap between two frames (a late frame never comes early), learnt at rest as well as moving. */
+  const ms=dt*1000;if(ms>2)base=Math.min(base,ms);
+  /* The first eight frames draw nothing, so the gaps between them are the display's and not the scene's: a scene too slow for a fast display
+     would otherwise pass for a slow display, and never step down. (The canvas is not shown before the name's flash is over, well after these.) */
+  if(probe<8){probe++;return}
   const goal=Math.min(1,sy/maxScroll),moving=Math.abs(goal-cur)>2e-4;
   cur=RM?goal:cur+(goal-cur)*(1-Math.exp(-dt*11));
   tAcc+=dt;
@@ -2054,9 +2059,12 @@ function frame(now){
   /* Adaptive quality while moving (scrolling or the opening slide): resolution steps down rather than frames being dropped, at 60 or 120 Hz alike.
      The step is taken before this frame is drawn: resizing the canvas blanks it, and drawn after, that blank showed as a black frame mid-scroll. */
   if(moving||intro<1&&warm>=3){
-    const ms=dt*1000;base=Math.min(base,ms);acc+=ms;n++;
-    if(n==45){const avg=acc/n;acc=0;n=0;
-      if(avg>base*1.4&&base<40&&scale>.9){scale=Math.max(.9,scale*.82);fit(true);step++}
+    acc+=ms;n++;if(ms>base*1.5)late++;
+    if(n==45){const avg=acc/n,l=late;acc=0;n=0;late=0;
+      /* The average lets two frames in five come late; at 60 Hz that is left as it was. At 90 Hz and more, six late frames in the 45, two windows
+         running, step down as well, and go on doing so only while the step before brought fewer: what resolution does not cure is left alone. */
+      bad=base<12&&l>=6&&l<was?bad+1:0;
+      if((avg>base*1.4||bad==2)&&base<40&&scale>.9){if(bad==2){was=l;bad=0}scale=Math.max(.9,scale*.82);fit(true);step++}
     }
   }
   const e=camera(cur,cv.width,cv.height),time=RM?0:tAcc;
