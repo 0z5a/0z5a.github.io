@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Helvetica Neue',Arial,sans-serif">
+<rect width="640" height="640" rx="14" fill="#faf9f5"/>
+<circle cx="320" cy="320" r="308" fill="#eef1f8" stroke="#faf9f5" stroke-width="2"/>
+<circle cx="320" cy="320" r="264" fill="#dde5f4" stroke="#faf9f5" stroke-width="2"/>
+<circle cx="320" cy="320" r="220" fill="#c9d6ee" stroke="#faf9f5" stroke-width="2"/>
+<circle cx="320" cy="320" r="176" fill="#b1c5e6" stroke="#faf9f5" stroke-width="2"/>
+<circle cx="320" cy="320" r="132" fill="#94b1dc" stroke="#faf9f5" stroke-width="2"/>
+<circle cx="320" cy="320" r="88" fill="#6f93cb" stroke="#faf9f5" stroke-width="2"/>
+<circle cx="320" cy="320" r="44" fill="#3f68b0" stroke="#faf9f5" stroke-width="2"/>
+<text x="320" y="39.2" text-anchor="middle" font-size="15" fill="#15233f">application</text>
+<text x="320" y="83.2" text-anchor="middle" font-size="15" fill="#15233f">serving</text>
+<text x="320" y="127.2" text-anchor="middle" font-size="15" fill="#15233f">runtime</text>
+<text x="320" y="170.9" text-anchor="middle" font-size="14" fill="#15233f">compiler</text>
+<text x="320" y="214.9" text-anchor="middle" font-size="14" fill="#15233f">kernels</text>
+<text x="320" y="258.6" text-anchor="middle" font-size="13" fill="#ffffff">PTX / SASS</text>
+<text x="320" y="324.6" text-anchor="middle" font-size="13" fill="#ffffff">hardware</text>
+</svg>
