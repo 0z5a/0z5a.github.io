@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" font-family="'Helvetica Neue',Arial,sans-serif">
+<rect width="900" height="430" rx="14" fill="#faf9f5"/>
+<path d="M309.2 264.2L160.8 264.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M309.2 264.2L160.8 115.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M309.2 264.2L309.2 115.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M160.8 264.2L160.8 115.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M160.8 264.2L309.2 115.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M160.8 115.8L309.2 115.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<circle cx="309.2" cy="264.2" r="11" fill="#15233f"/>
+<circle cx="160.8" cy="264.2" r="11" fill="#15233f"/>
+<circle cx="160.8" cy="115.8" r="11" fill="#15233f"/>
+<circle cx="309.2" cy="115.8" r="11" fill="#15233f"/>
+<path d="M760.5 237.8L692.8 305.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M760.5 237.8L597.2 305.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M760.5 237.8L529.5 237.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M760.5 237.8L529.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M760.5 237.8L597.2 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M760.5 237.8L692.8 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M760.5 237.8L760.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M692.8 305.5L597.2 305.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M692.8 305.5L529.5 237.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M692.8 305.5L529.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M692.8 305.5L597.2 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M692.8 305.5L692.8 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M692.8 305.5L760.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M597.2 305.5L529.5 237.8" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M597.2 305.5L529.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M597.2 305.5L597.2 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M597.2 305.5L692.8 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M597.2 305.5L760.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M529.5 237.8L529.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M529.5 237.8L597.2 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M529.5 237.8L692.8 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M529.5 237.8L760.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M529.5 142.2L597.2 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M529.5 142.2L692.8 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M529.5 142.2L760.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M597.2 74.5L692.8 74.5" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M597.2 74.5L760.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<path d="M692.8 74.5L760.5 142.2" stroke="#3b6fd4" stroke-width="2.4" stroke-opacity=".7"/>
+<circle cx="760.5" cy="237.8" r="11" fill="#15233f"/>
+<circle cx="692.8" cy="305.5" r="11" fill="#15233f"/>
+<circle cx="597.2" cy="305.5" r="11" fill="#15233f"/>
+<circle cx="529.5" cy="237.8" r="11" fill="#15233f"/>
+<circle cx="529.5" cy="142.2" r="11" fill="#15233f"/>
+<circle cx="597.2" cy="74.5" r="11" fill="#15233f"/>
+<circle cx="692.8" cy="74.5" r="11" fill="#15233f"/>
+<circle cx="760.5" cy="142.2" r="11" fill="#15233f"/>
+<text x="235" y="372" text-anchor="middle" font-size="26" fill="#15233f"><tspan font-style="italic">n</tspan> = 4</text>
+<text x="235" y="406" text-anchor="middle" font-size="22" fill="#4a556b"><tspan font-style="italic">n</tspan>(<tspan font-style="italic">n</tspan>−1)/2 = 6</text>
+<text x="645" y="372" text-anchor="middle" font-size="26" fill="#15233f"><tspan font-style="italic">n</tspan> = 8</text>
+<text x="645" y="406" text-anchor="middle" font-size="22" fill="#4a556b"><tspan font-style="italic">n</tspan>(<tspan font-style="italic">n</tspan>−1)/2 = 28</text>
+</svg>
