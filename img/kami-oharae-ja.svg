@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 592" width="560" height="592" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans CJK JP','Yu Gothic','Meiryo','Helvetica Neue',Arial,sans-serif">
+<rect width="560" height="592" rx="14" fill="#faf9f5"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15233f"/></marker></defs>
+<g transform="translate(20,18)" fill="none" stroke="#15233f" stroke-width="1.4" text-anchor="middle">
+<text x="130" y="30" font-size="22" font-weight="700" stroke="none" fill="#15233f">大祓詞</text>
+<text x="390" y="30" font-size="22" font-weight="700" stroke="none" fill="#15233f">飛ばし</text>
+<rect x="10" y="52" width="240" height="74" rx="6"/>
+<text x="130" y="85" font-size="22" stroke="none" fill="#15233f">罪</text><text x="130" y="111" font-size="16" stroke="none" fill="#4a556b">高山から速川を下る</text>
+<path d="M130 128V153" marker-end="url(#a)"/>
+<rect x="10" y="156" width="240" height="74" rx="6"/>
+<text x="130" y="189" font-size="22" stroke="none" fill="#15233f">瀬織津比売</text><text x="130" y="215" font-size="16" stroke="none" fill="#4a556b">大海原へ持ち出す</text>
+<path d="M130 232V257" marker-end="url(#a)"/>
+<rect x="10" y="260" width="240" height="74" rx="6"/>
+<text x="130" y="293" font-size="22" stroke="none" fill="#15233f">速開都比売</text><text x="130" y="319" font-size="16" stroke="none" fill="#4a556b">潮の八百会で呑む</text>
+<path d="M130 336V361" marker-end="url(#a)"/>
+<rect x="10" y="364" width="240" height="74" rx="6"/>
+<text x="130" y="397" font-size="22" stroke="none" fill="#15233f">気吹戸主</text><text x="130" y="423" font-size="16" stroke="none" fill="#4a556b">根の国へ吹き放つ</text>
+<path d="M130 440V465" marker-end="url(#a)"/>
+<rect x="10" y="468" width="240" height="74" rx="6" stroke-dasharray="5 5"/>
+<text x="130" y="501" font-size="22" stroke="none" fill="#15233f">速佐須良比売</text><text x="130" y="527" font-size="16" stroke="none" fill="#4a556b">さすらい失う</text>
+<rect x="270" y="52" width="240" height="74" rx="6"/>
+<text x="390" y="85" font-size="22" stroke="none" fill="#15233f">損失</text><text x="390" y="111" font-size="16" stroke="none" fill="#4a556b">親会社の帳簿に</text>
+<path d="M390 128V153" marker-end="url(#a)"/>
+<rect x="270" y="156" width="240" height="74" rx="6"/>
+<text x="390" y="189" font-size="22" stroke="none" fill="#15233f">子会社</text><text x="390" y="215" font-size="16" stroke="none" fill="#4a556b">移しかえる</text>
+<path d="M390 232V257" marker-end="url(#a)"/>
+<rect x="270" y="260" width="240" height="74" rx="6"/>
+<text x="390" y="293" font-size="22" stroke="none" fill="#15233f">簿外</text><text x="390" y="319" font-size="16" stroke="none" fill="#4a556b">決算に載せない</text>
+<path d="M390 336V361" marker-end="url(#a)"/>
+<rect x="270" y="364" width="240" height="74" rx="6"/>
+<text x="390" y="397" font-size="22" stroke="none" fill="#15233f">再び転売</text><text x="390" y="423" font-size="16" stroke="none" fill="#4a556b">何度も何度も</text>
+<path d="M390 440V465" marker-end="url(#a)"/>
+<rect x="270" y="468" width="240" height="74" rx="6" stroke-dasharray="5 5"/>
+<text x="390" y="501" font-size="22" stroke="none" fill="#15233f">行方知れず</text><text x="390" y="527" font-size="16" stroke="none" fill="#4a556b">誰も認めない</text>
+</g>
+</svg>
