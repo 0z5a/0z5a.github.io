@@ -23,11 +23,12 @@
 <meta name="twitter:image:alt" content="Thumbnail of the official music video of Senbonzakura by Kurousa-P (WhiteFlame) feat. Hatsune Miku, illustration by Ittomaru.">
 <style>html{background:#fff}@media (prefers-color-scheme:dark){html{background:#000}}html[data-theme=light]{background:#fff}html[data-theme=dark]{background:#000}</style>
 <script data-loader>/* X reads no page over 2 MB and the site's one page is about 4 MB: this address carries only its share card, then puts that page
-   in its own place, at this same address. Written in the oldest JavaScript, like the gate; without the page, the plain page's anchor. */
+   in its own place, at this same address. Written in the oldest JavaScript, like the gate; without the page, the plain page's anchor.
+   The page is asked for with max-age=0, so the browser checks it is current (a reload of this address would not otherwise). */
 (function(){var d=document,f='/#kami',t=null,x;try{t=localStorage.getItem('theme')}catch(e){}if(t=='dark'||t=='light')d.documentElement.setAttribute('data-theme',t);
 function w(){d.open();d.write(x.responseText);d.close()}
 try{x=new XMLHttpRequest();x.onreadystatechange=function(){if(x.readyState!=4)return;if(x.status!=200||x.responseText.indexOf('<title>/0z5a</title>')<0){location.replace(f);return}
-if(d.readyState=='loading')d.addEventListener('DOMContentLoaded',w);else w()};x.open('GET','/',true);x.send()}catch(e){location.replace(f)}})();
+if(d.readyState=='loading')d.addEventListener('DOMContentLoaded',w);else w()};x.open('GET','/',true);x.setRequestHeader('Cache-Control','max-age=0');x.send()}catch(e){location.replace(f)}})();
 </script>
 </head>
 <body><noscript><p><a href="/#kami">/0z5a</a></p></noscript></body>
