@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 592" width="560" height="592" font-family="'Helvetica Neue',Arial,sans-serif">
+<rect width="560" height="592" rx="14" fill="#faf9f5"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15233f"/></marker></defs>
+<g transform="translate(20,18)" fill="none" stroke="#15233f" stroke-width="1.4" text-anchor="middle">
+<text x="130" y="30" font-size="22" font-weight="700" stroke="none" fill="#15233f">Ōharae no kotoba</text>
+<text x="390" y="30" font-size="22" font-weight="700" stroke="none" fill="#15233f">Tobashi</text>
+<rect x="10" y="52" width="240" height="74" rx="6"/>
+<text x="130" y="85" font-size="22" stroke="none" fill="#15233f">Sin</text><text x="130" y="111" font-size="16" stroke="none" fill="#4a556b">down the mountain rapids</text>
+<path d="M130 128V153" marker-end="url(#a)"/>
+<rect x="10" y="156" width="240" height="74" rx="6"/>
+<text x="130" y="189" font-size="22" stroke="none" fill="#15233f">Seoritsu-hime</text><text x="130" y="215" font-size="16" stroke="none" fill="#4a556b">carries it out to sea</text>
+<path d="M130 232V257" marker-end="url(#a)"/>
+<rect x="10" y="260" width="240" height="74" rx="6"/>
+<text x="130" y="293" font-size="22" stroke="none" fill="#15233f">Hayaakitsu-hime</text><text x="130" y="319" font-size="16" stroke="none" fill="#4a556b">swallows it where tides meet</text>
+<path d="M130 336V361" marker-end="url(#a)"/>
+<rect x="10" y="364" width="240" height="74" rx="6"/>
+<text x="130" y="397" font-size="22" stroke="none" fill="#15233f">Ibukido-nushi</text><text x="130" y="423" font-size="16" stroke="none" fill="#4a556b">blows it to the root land</text>
+<path d="M130 440V465" marker-end="url(#a)"/>
+<rect x="10" y="468" width="240" height="74" rx="6" stroke-dasharray="5 5"/>
+<text x="130" y="501" font-size="22" stroke="none" fill="#15233f">Hayasasura-hime</text><text x="130" y="527" font-size="16" stroke="none" fill="#4a556b">wanders, loses it</text>
+<rect x="270" y="52" width="240" height="74" rx="6"/>
+<text x="390" y="85" font-size="22" stroke="none" fill="#15233f">Loss</text><text x="390" y="111" font-size="16" stroke="none" fill="#4a556b">on the parent's books</text>
+<path d="M390 128V153" marker-end="url(#a)"/>
+<rect x="270" y="156" width="240" height="74" rx="6"/>
+<text x="390" y="189" font-size="22" stroke="none" fill="#15233f">Subsidiary</text><text x="390" y="215" font-size="16" stroke="none" fill="#4a556b">moved out</text>
+<path d="M390 232V257" marker-end="url(#a)"/>
+<rect x="270" y="260" width="240" height="74" rx="6"/>
+<text x="390" y="293" font-size="22" stroke="none" fill="#15233f">Off the books</text><text x="390" y="319" font-size="16" stroke="none" fill="#4a556b">left out of the statements</text>
+<path d="M390 336V361" marker-end="url(#a)"/>
+<rect x="270" y="364" width="240" height="74" rx="6"/>
+<text x="390" y="397" font-size="22" stroke="none" fill="#15233f">Passed on</text><text x="390" y="423" font-size="16" stroke="none" fill="#4a556b">hand after hand</text>
+<path d="M390 440V465" marker-end="url(#a)"/>
+<rect x="270" y="468" width="240" height="74" rx="6" stroke-dasharray="5 5"/>
+<text x="390" y="501" font-size="20" stroke="none" fill="#15233f">Whereabouts unknown</text><text x="390" y="527" font-size="16" stroke="none" fill="#4a556b">nobody claims it</text>
+</g>
+</svg>
